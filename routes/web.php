@@ -167,3 +167,9 @@ Route::get('/chatting_forum','BlogController@comment_now');
 Route::post('save_forum','BlogController@save');
 
 
+
+// Laravel 5.1.17 and above
+Route::post('/pay', 'PaymentController@redirectToGateway')->name('pay');
+Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
+
+

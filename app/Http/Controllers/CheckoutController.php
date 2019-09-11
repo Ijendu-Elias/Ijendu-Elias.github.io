@@ -8,6 +8,7 @@ use\App\Http\Requests;
 use Session;
 use Cart;
 use\Illuminate\Support\Facades\Redirect;
+use Paystack;
 session_start();
 
 class CheckoutController extends Controller
@@ -120,60 +121,81 @@ class CheckoutController extends Controller
                 $orderdata['payment_id']=$payment_id;
                 $orderdata['order_total']=Cart::total();
                 $orderdata['order_status']='pending';
+
                 $order_id=DB::table('tbl_order')
-                
                             ->insertGetId($orderdata);
 
                 //getting the contents as cart which has its product and price
                 $content=Cart::content();
 
-                
-                $order_detaildata=array();
-                
-
-                foreach($content as $d_content)
-                {
-                    $order_detaildata['order_id']=$order_id;
-                    $order_detaildata['product_id']=$d_content->id;
-                    $order_detaildata['product_name']=$d_content->name;
-                    $order_detaildata['product_price']=$d_content->price;
-                    $order_detaildata['product_sales_quantity']=$d_content->qty;
-                    DB::table('tbl_order_details')
-                                ->insert($order_detaildata);
-                }
-
                 if($payment_gateway=='handcash'){
+
+                    $order_detaildata=array();
+                    foreach($content as $d_content)
+                    {
+                        $order_detaildata['order_id']=$order_id;
+                        $order_detaildata['product_id']=$d_content->id;
+                        $order_detaildata['product_name']=$d_content->name;
+                        $order_detaildata['product_price']=$d_content->price;
+                        $order_detaildata['product_sales_quantity']=$d_content->qty;
+                        
+                        DB::table('tbl_order_details')
+                                    ->insert($order_detaildata);
+                    }
                     Cart::destroy();//deleting the cart after notification of contacting...
                     return view('pages.handcash', compact('payment_gateway'));
                     
 
-                }elseif($payment_gateway=='cart'){
-                    echo "cart";
-
-
-                }elseif($payment_gateway=='mastercard'){
-
-                    echo "Successfully with mastercard";
-
-
-                }elseif($payment_gateway=='bitcoin'){
-                    echo "Successfully with bitcoin";
-
-
-                }elseif($payment_gateway=='paypal'){
-                    echo "Successfully with paypal";
-
-
-                }elseif($payment_gateway=='amex'){
-                    echo "Successfully with amex";
-
-
                 }else{
+
+                    $order_detaildata=array();
+                    $order_detaildata['order_id']=$order_id;
+                    $index = 0;
+                    $total_price = 0;
+
+                    foreach($content as $d_content)
+                    {
+                        $order_detaildata['product'][$index]['id']=$d_content->id;
+                        $order_detaildata['product'][$index]['name']=$d_content->name;
+                        $order_detaildata['product'][$index]['price']=$d_content->price;
+                        $order_detaildata['product'][$index]['sales_quantity']=$d_content->qty;
+                        $total_price += doubleval($d_content->price);
+                        $index++;
+                    }
+                    $shipping_id=Session::get('shipping_id');
+                    $profile_get=DB::table('tbl_shipping')
+                                        ->where('shipping_id', $shipping_id)
+                                        ->first();
+
+                    $request->metadata = json_encode($order_detaildata);
+                    $request->amount = $total_price * 100;// convert to kobo
+                    $request->email = $profile_get->shipping_email;
+                    $request->reference = Paystack::genTranxRef();
+                    $request->key = config('paystack.secretKey');
+                    
+                    
+
+                     dd($request);
+                    return Paystack::getAuthorizationUrl()->redirectNow();
+
                     echo "Payment method Not selected";
 
                 }
-
             }
+
+            /**
+             * Obtain Paystack payment information
+             * @return void
+             */
+            public function handleGatewayCallback()
+            {
+                $paymentDetails = Paystack::getPaymentData();
+
+                dd($paymentDetails);
+            }
+
+
+            
 
             //profile edit function
             public function edit_profile($customer_id)
