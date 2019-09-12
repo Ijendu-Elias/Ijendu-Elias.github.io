@@ -111,7 +111,6 @@ class CheckoutController extends Controller
                 $paydata =array();
                 $paydata['payment_method']=$payment_gateway;
                 $paydata['payment_status']='pending';
-
                 $payment_id=DB::table('tbl_payment')
                         ->insertGetId($paydata);
 
@@ -121,7 +120,6 @@ class CheckoutController extends Controller
                 $orderdata['payment_id']=$payment_id;
                 $orderdata['order_total']=Cart::total();
                 $orderdata['order_status']='pending';
-
                 $order_id=DB::table('tbl_order')
                             ->insertGetId($orderdata);
 
