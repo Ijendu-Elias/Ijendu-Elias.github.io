@@ -32,54 +32,6 @@
             <br>
     </div>
 
-
-<div class="container"><!-- Shipping container-->
-    <div class="container-fluid">
-            <marquee><h4 style="margin-left:19%; color:red"><span class="fa fa-info">&nbsp;Customer Shipping Information</span></h4></marquee>
-    </div>
-    
-    <div class="row">
-        <div class="container col-sm-8 col-md-offset-0" style="height:270px; box-shadow: 1px 1px 1px 1px gray; border-bottom:1px solid gray; min-width:50px; overflow-x:scroll;" >
-        <form><!--beginning of Shipping Form-->
-            <table class="table">
-                    <tr style="color:burlywood">
-                            <th style="text-align:center"> Email</th>
-                            <th> First Name</th>
-                            <th> Last Name</th>
-                            <th style="text-align:center"> Address</th>
-                            <th>City</th>
-                            <th style="text-align:center"> Phone Number</th>
-                        </tr>
-                        
-
-                    <?php $shipping_id=Session::get('shipping_id'); ?>
-                    <?php
-                    $shipping_get=DB::table('tbl_shipping')
-                                                ->where('shipping_id', $shipping_id)
-                                                ->get();
-                    foreach($shipping_get as $nyben){?>
-                                
-
-                     <tr>
-                            <td>{{ $nyben->shipping_email }}</td>
-                            <td>{{ $nyben->shipping_first_name }}</td>
-                            <td>{{ $nyben->shipping_last_name }}</td>
-                            <td>{{ $nyben->shipping_address }}</td>
-                            <td>{{ $nyben->shipping_city }}</td>
-                            <td>{{ $nyben->shipping_phone_number }}</td>
-                        
-                        </tr>
-                
-                <?php } ?>
-            </table>
-           <a class="btn-sm btn-info fa fa-edit" href="{{URL::to('/edit-shipping/'.$nyben->shipping_id)}}" style="float:left;" >Edit</a>
-            <a class="btn-sm btn-danger fa fa-times" href="{{URL::to('/')}}" style="float:right">Exit</a>
-        </form><!--End of Shipping Form-->
-        </div>
-    </div>
-   
-
-
     </div>
     
 

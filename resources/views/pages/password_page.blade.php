@@ -15,6 +15,15 @@
                     <input type="submit" value="Update Password"  class="btn btn-sm btn-warning" />
                 <a class="btn-sm btn-danger " href="{{URL::to('/profile_view')}}" style="float:right"><i class="fa fa-arrow-right">Cancel</i></a>
             </div>
+            
+            <div class="alert-danger" style="border-radius:3px;">
+                <?php
+                $message=Session::get('message');
+                if($message)
+                 echo $message;
+                 Session::put('message', null);
+             ?>
+            </div><!--end of flash message-->
     </form>
 </div>
 @endsection

@@ -6,6 +6,8 @@
         <div class="breadcrumbs">
             <ol class="breadcrumb">
               <li><a href="{{URL::to('/')}}" class="btn btn-default" style="background:white; color:black;">Home</a></li>
+        <?php $shipping_id=Session::get('shipping_id'); ?>
+              <li><a href="{{URL::to('/edit-shipping/'.$shipping_id)}}" class="btn btn-default" style="background:white; color:black;">Edit Shipping Details</a></li>
               <li class="active">Product Cart Check</li>
             </ol>
         </div>

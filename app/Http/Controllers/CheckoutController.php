@@ -20,6 +20,7 @@ class CheckoutController extends Controller
 
     public function register(Request $request)
     {
+
         $data = array();
         $data['customer_name']=$request->customer_name;
         $data['customer_email']=$request->customer_email;
@@ -237,9 +238,11 @@ class CheckoutController extends Controller
                 ->where('shipping_id', $shipping_id)
                 ->update($data);
                 Session::get('message','You Updated Your Shipping Details Successfully');
-                return Redirect::to('/profile_view');
+                return Redirect::to('/edit-shipping');
             }
 
+
+            
             //updating customer password
             public function preview_page_password($customer_id)
             {
