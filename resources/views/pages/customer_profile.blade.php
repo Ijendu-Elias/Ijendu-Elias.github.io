@@ -29,14 +29,7 @@
 
            </form>
         <?php } ?>
-            <br>
+            
     </div>
-
     </div>
-    
-
-
-
-
-
 @endsection

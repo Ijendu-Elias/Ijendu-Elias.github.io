@@ -113,8 +113,8 @@
 					<div class="col-sm-6">
 						<div class="contactinfo">
 							<ul class="nav nav-pills">
-								<li><a href="#"><i class="fa fa-phone"></i><b>USERS: {{ Session::get('phone_number') }}&nbsp;<span style="color:red">ID:</span> {{ Session::get('customer_id') }} </b>&nbsp;  <span style="color:orange">|</span><i class="fa fa-phone"><b>ADMIN: +234 703 544 9154</b></i></a></li>
-								<li><a href="#"><i class="fa fa-envelope"></i>{{ Session::get('customer_email') }} </a></li>
+								<li><a href="{{URL::to('/profile_view')}}"><i class="fa fa-phone"></i><b>USERS: {{ Session::get('phone_number') }}&nbsp;<span style="color:red">ID:</span> {{ Session::get('customer_id') }} </b>&nbsp;  <span style="color:orange">|</span><i class="fa fa-phone"><b>ADMIN: +234 703 544 9154</b></i></a></li>
+								<li><a href="{{URL::to('/profile_view')}}"><i class="fa fa-envelope"></i>{{ Session::get('customer_email') }} </a></li>
 							</ul>
 						</div>
 					</div>
