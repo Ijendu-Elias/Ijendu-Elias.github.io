@@ -165,5 +165,7 @@ Route::get('/test_Brain','testingController@bussiness_test' );
 Route::get('/chatting_forum','BlogController@comment_now');
 //save chat forum route
 Route::post('save_forum','BlogController@save');
+//leave a reply
+Route::post('/reply','BlogController@reply_back');
 
 

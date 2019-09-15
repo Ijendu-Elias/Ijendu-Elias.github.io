@@ -215,7 +215,7 @@
 							<?php $customer_id=Session::get('customer_id'); ?>
 													
 							<?php if($customer_id != NULL){?>
-								<li><a href="{{URL::to('/profile_view')}}"><i class="fa fa-user"></i> Account Settings</a></li>
+								<li><a href="{{URL::to('/profile_view')}}"><i class="fa fa-gear"></i> Account Settings</a></li>
 								<li><a class="customer_log_out" href="{{URL::to('customer_logout')}}"><i class="fa fa-lock"></i> Logout</a></li>
 								
 							<?php }else{?>
@@ -401,10 +401,10 @@
 							<div class="row">
 							<div class="col-sm-2">
 								<div class="companyinfo">
-							<h2 id="ecom" >ecommerce&nbsp;</span>Open shop</h2>
+							<h2 id="ecom" ><a href="#">ecommerce&nbsp;</span>Open shop</a></h2>
 							<p class="hs2">Do You Know You Can Be Part Of Our Team</p>
 							<p class="hs2">Do You Want Your Ads To Reach Accross the Country in 5MIN?</p>
-							<p class="hs1">Apply For Ads! </p>
+							<p class="hs1"><a href="#">Apply For Ads! </a></p>
 						</div>
 					</div>
 					<div class="col-sm-7">

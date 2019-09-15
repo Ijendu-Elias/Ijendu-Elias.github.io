@@ -56,6 +56,18 @@ class BlogController extends Controller
         return Redirect::to('/chatting_forum');
     }
 
+    public function reply_back (Request $request)
+    {
+        $data=array();
+        $data['reply_body']=$request->reply_body;
+        DB::table('tbl_forum_reply')
+                ->insert($data);
+                Session::put('mess', 'posted successfully !!');
+                return Redirect::to('/chatting_forum');
+
+
+            }
+
 
      // customer login validation and pages view control
      public function CustomerAuthCheck()

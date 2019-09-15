@@ -21,33 +21,53 @@
 
             <div class="container-fluid">
                 <div class="row" style="background:white">
-                
-                    
                     <h4><i class="fa fa-globe" style="color:red"><span style="color:black; cursor:pointer">Post:</span></i><span style="color:gray; font-weight:bold; cursor:pointer"> {{ $view->forum_body }}</</h4>
                     <h5><i class="fa fa-user" style="color:red; cursor:pointer">By:</i><span style="color:deepskyblue; cursor:pointer;">{{ $view->forum_name }}</</h5><br>
-                        <h5><i class="fa fa-calender" style="color:red">On:</i><span style="color:deepskyblue">{{Carbon\Carbon::createFromFormat('Y-m-d', $view->post_date)}}</</h5><br><br>
-                            <form action="{{URL::to('/reply')}}" method="POST">
-                                <input type="text" name="reply" placeholder="reply..."  style="border-radius:5px; width:10%; border:0px; cursor:pointer;" required/>
-                                <button  style="width:20px; border:0px; background:lavenderblush"  ><i class="fa fa-arrow-right" style="color:deepskyblue"></i></button> 
-                            </form>
+                        <h5><i class="fa fa-calender" style="color:red">On:</i><span style="color:deepskyblue">{{Carbon\Carbon::createFromFormat('Y-m-d', $view->post_date)}}</</h5><br><br> 
                 </div>
-                            
+                         
             </div>
+            <div>
+        <?php } ?>
+            <br>
+            <br><br>
+           <?php $reply_id=Session::get('reply_id');?>
+            <?php 
+            $get_article=DB::table('tbl_forum_reply')
+            ->get(); 
+            foreach($get_article as $ok){?>
+            <p style="text-align:right; color:green">{{$ok->reply_body}}</p>
+    
+    <?php }?>
+    </ul><!--reply -->
+                <form action="{{URL::to('/reply')}}" method="POST">
+                    {{ csrf_field() }}
+                    <label class="fa fa-comments"  style="float:right; margin-right:5%; color:red; padding-left:2%;">Reply Section</label>
+                    <textarea class="form-control" rows="3" name="reply_body" placeholder="Leave reply..."  style="border-radius:5px; width:200px; cursor:pointer; float:right" required></textarea><br><br><br><br>
+                    <button  style="width:20px; border:0px; background:lavenderblush; float:right; margin-right:19%;"  ><i class="fa fa-arrow-right" style="color:deepskyblue"></i></button> 
+                </form>
+                <div class="alert-success">
+                    <?php
+                       $message=Session::get('mess');
+                    
+                       if($message)
+                        echo $message;
+                        Session::put('mess', null);
+                    ?>
+                </div>
+            </div><br><br><br><br>
 
-            <?php } ?>
-            <br><br><br>
 
-    </ul>
         <div class="row" style="margin-left:0%;">
             <div class="col-lg-5 col-md-offset-0">
                 <form role="form" action="{{URL::to('/save_forum')}}" method="POST" >
                     {{ csrf_field() }}
                     <div class="form-group">
                         <label>Customer Market Chat/Discusstion Forum</label>
-                        <input class="form-control" name="forum_name"  placeholder="Full Name E.g Elias"  style="width:200px;">
+                        <input class="form-control" name="forum_name"  placeholder="E.g Elias Ijendu"  style="width:200px;">
                     </div>
                     <div class="form-group">
-                        <input class="form-control" name="forum_number"  placeholder="Phone Number E.g 080XXXXXXXX"  style="width:200px;">
+                        <input class="form-control" name="forum_number"  placeholder="E.g 080xxxxxxxx"  style="width:200px;">
                     </div>
                     
                     <div class="form-group">
@@ -55,7 +75,7 @@
                     </div>
                    
                     <div class="form-group">
-                        <label>Whats Todays Date?</label>
+                        <label>Tag Todays Date</label>
                         <input class="form-control" name="post_date"  placeholder="Full Name" type="date"  style="border:0px; width:70px;">
                     </div>
 
@@ -69,6 +89,7 @@
                 @endforeach
                 @endif
             </div>
+            
                     </div>
           
                 
