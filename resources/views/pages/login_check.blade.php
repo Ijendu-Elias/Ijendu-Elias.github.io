@@ -40,7 +40,8 @@
                       <input type="text" placeholder="Name" name="customer_name" required/>
                         <input type="email" placeholder="Email Address" name="customer_email"required/>
                         <input type="text" name="phone_number" placeholder="Enter your phone Number"required />
-                        <input type="password" name="password" placeholder="Enter your Password" required/>
+                        <input type="password" name="password" placeholder="Enter your Password" required id="password" />
+                        <input type="password" name="confirm_password" placeholder="Confirm Password" required id="confirm_password"  />
                         <button type="submit" class="btn btn-default">Signup</button>
                     </form>
                 </div><!--/sign up form-->

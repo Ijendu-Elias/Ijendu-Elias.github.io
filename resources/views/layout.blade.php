@@ -177,7 +177,6 @@
 					</div>
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
-
 								<!--logout alert flash message-->
 								<p class="alert-success" style="border-radius:3px;">
 										<?php
@@ -679,6 +678,7 @@ $('.customer').on("click",function(e){
 		}, 4000)
 	});
 
+ 
 
 //profile validation
 // (function() {
