@@ -11,7 +11,7 @@
 |
 */
 //frontend side..................................
-Route::get('/', 'HomeController@index');
+Route::get('/', 'HomeController@index')->name('home');
 
 //product category wise at layout user side
 Route::get('/category_wise/{category_id}', 'HomeController@show_category_product_wise');
@@ -167,5 +167,10 @@ Route::get('/chatting_forum','BlogController@comment_now');
 Route::post('save_forum','BlogController@save');
 //leave a reply
 Route::post('/reply','BlogController@reply_back');
+
+
+
+// Laravel 5.1.17 and above
+Route::get('/payment/callback', 'CheckoutController@handleGatewayCallback');
 
 

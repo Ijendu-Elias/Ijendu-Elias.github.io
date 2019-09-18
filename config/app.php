@@ -165,6 +165,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         //ecommerce cart dependecies
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
+        Unicodeveloper\Paystack\PaystackServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -229,6 +230,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         //ecommerce cart dependecies
         'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
+        'Paystack' => Unicodeveloper\Paystack\Facades\Paystack::class,
     ],
 
 ];

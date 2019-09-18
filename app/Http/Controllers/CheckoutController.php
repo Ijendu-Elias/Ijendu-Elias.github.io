@@ -36,6 +36,7 @@ class CheckoutController extends Controller
         $data['customer_email']=$request->customer_email;
         $data['phone_number']=$request->phone_number;
         $data['password'] = md5($request->password);
+        $data['confirm_password'] = $request->confirm_password;
 
         
 
@@ -157,9 +158,9 @@ class CheckoutController extends Controller
                     
 
                 }else{
-
                     $order_detaildata=array();
                     $order_detaildata['order_id']=$order_id;
+                    $order_detaildata['payment_id']=$payment_id;
                     $index = 0;
                     $total_price = 0;
 
@@ -183,13 +184,9 @@ class CheckoutController extends Controller
                     $request->reference = Paystack::genTranxRef();
                     $request->key = config('paystack.secretKey');
                     
-                    
-
-                     dd($request);
+                
+                    //  dd($request);
                     return Paystack::getAuthorizationUrl()->redirectNow();
-
-                    echo "Payment method Not selected";
-
                 }
             }
 
@@ -197,11 +194,50 @@ class CheckoutController extends Controller
              * Obtain Paystack payment information
              * @return void
              */
-            public function handleGatewayCallback()
+            public function handleGatewayCallback(Request $request)
             {
-                $paymentDetails = Paystack::getPaymentData();
+                if(!$request->trxref && !$request->reference)
+                    return redirect()->route('home');
 
-                dd($paymentDetails);
+                
+
+                $paymentDetails = Paystack::getPaymentData();
+                $order_id = $paymentDetails['data']['metadata']['order_id'];
+                $payment_id = $paymentDetails['data']['metadata']['payment_id'];
+                $content = $paymentDetails['data']['metadata']['product'];
+
+                $payment =DB::table('tbl_payment')
+                    ->where('payment_id',$payment_id)
+                    ->first();
+                    
+                if($payment->payment_data != null)
+                    return redirect()->route('home');
+
+                $order_detaildata=array();
+                    foreach($content as $d_content)
+                    {
+                        $order_detaildata['order_id']=$order_id;
+                        $order_detaildata['product_id']=$d_content['id'];
+                        $order_detaildata['product_name']=$d_content['name'];
+                        $order_detaildata['product_price']=$d_content['price'];
+                        $order_detaildata['product_sales_quantity']=$d_content['sales_quantity'];
+                        
+                        DB::table('tbl_order_details')
+                                    ->insert($order_detaildata);
+                    }
+
+                    //update payment data
+                    $paydata =array();
+                $paydata['payment_status']='approved';
+                $paydata['payment_data'] = json_encode($paymentDetails);
+
+                $payment_id=DB::table('tbl_payment')
+                        ->where('payment_id',$payment_id)
+                        ->update($paydata);
+                
+                    Cart::destroy();//deleting the cart after notification of contacting...
+
+                   echo "success";
             }
 
 
