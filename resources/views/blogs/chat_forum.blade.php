@@ -13,17 +13,13 @@
             <a href="#">|<span style="color:deepskyblue; font-weight:bolder;">Read</span></a>
         <li>
         </li>
-        <h3 style="text-align:right; color:red;"> Market Online Forum </h3>
-
-
-        
+        <h3 style="text-align:right; color:red;"> Market Chat Room </h3>        
         <?php foreach ($get_article as $view){?>
-
             <div class="container-fluid">
                 <div class="row" style="background:white">
                     <h4><i class="fa fa-globe" style="color:red"><span style="color:black; cursor:pointer">Post:</span></i><span style="color:gray; font-weight:bold; cursor:pointer"> {{ $view->forum_body }}</</h4>
                     <h5><i class="fa fa-user" style="color:red; cursor:pointer">By:</i><span style="color:deepskyblue; cursor:pointer;">{{ $view->forum_name }}</</h5><br>
-                        <h5><i class="fa fa-calender" style="color:red">On:</i><span style="color:deepskyblue">{{Carbon\Carbon::createFromFormat('Y-m-d', $view->post_date)}}</</h5><br><br> 
+                        <h5><i class="fa fa-calender" style="color:red">On: {{$view->post_date}}</i><span style="color:deepskyblue"></</h5><br><br> 
                 </div>
                          
             </div>
@@ -36,7 +32,11 @@
             $get_article=DB::table('tbl_forum_reply')
             ->get(); 
             foreach($get_article as $ok){?>
-            <p style="text-align:right; color:green">{{$ok->reply_body}}</p>
+            <H5 style="text-align:right; color:green">{{$ok->reply_body}}</h5>
+            <h6 style="text-align:right; color:Darkskyblue">{{$ok->reply_date}}</h6><br style="text-align:left;">
+
+
+
     
     <?php }?>
     </ul><!--reply -->
@@ -75,13 +75,15 @@
                     </div>
                    
                     <div class="form-group">
-                        <label>Tag Todays Date</label>
-                        <input class="form-control" name="post_date"  placeholder="Full Name" type="date"  style="border:0px; width:70px;">
+                        <label>Post Live</label>
+                        <input type="hidden" class="form-control" name="post_date"  placeholder="Full Name"                      "  style="border:0px; width:70px;">
                     </div>
+
 
                     <input type="submit" value="Post"  class="btn-sm btn-info" /><i class="fa fa-globe"></i>
                     <a class="btn-sm btn-danger " href="{{URL::to('/')}}" style="float:right"><i class="fa fa-arrow-right">Cancel</i></a>
                 </form>
+
                 @if (count($errors) > 0 )
                 <div class="alert alert-danger">
                 @foreach($errors->all() as $error)

@@ -17,6 +17,7 @@ class CreateTblPaymentTable extends Migration
             $table->increments('payment_id');
             $table->string('payment_method');
             $table->string('payment_status');
+            $table->text('payment_data')->nullable();
             $table->timestamps();
         });
     }

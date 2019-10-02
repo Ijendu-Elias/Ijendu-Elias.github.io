@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use DB;
 use\App\Http\Requests;
+use App\Mail\ResetMail;
+use App\Mail\VerificationMail;
 use Session;
 use Cart;
 use Illuminate\Support\Facades\Validator;
 use\Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Mail;
 use Paystack;
 session_start();
 
@@ -22,21 +26,18 @@ class CheckoutController extends Controller
 
     public function register(Request $request)
     {
-        $rules = array(
-            'customer_name' => 'required|alpha_num|min:3|max:32',
-            'customer_email' => 'required|email',
-            'phone_number' => 'required|email',
-            'password' => 'required|min:10|confirm',
-            'confirm_password' => 'required|min:10'
-        );
+        $this->validate($request, [
+            'customer_name' => 'required|min:3|max:32',
+            'customer_email' => 'required|email|unique:tbl_customers_registered,customer_email',
+            'phone_number' => 'required',
+            'password' => 'required|min:8|confirmed',
+        ]);
 
-       
         $data = array();
         $data['customer_name']=$request->customer_name;
         $data['customer_email']=$request->customer_email;
         $data['phone_number']=$request->phone_number;
         $data['password'] = md5($request->password);
-        $data['confirm_password'] = $request->confirm_password;
 
         
 
@@ -45,8 +46,37 @@ class CheckoutController extends Controller
                             ->insertGetid($data);
                             Session::put('customer_id', $customer_id);
                             Session::put('customer_email',$request->customer_email);
+                            Session::put('customer_name',$request->customer_name);
                             Session::put('phone_number', $request->phone_number);
                            return Redirect::to('/checkout');
+    }
+
+    public function email_verify(Request $request){
+        return view('pages.resend_varification');
+    }
+    
+
+    public function email_verify_resend(Request $request){
+
+        $user = DB::table('tbl_customers_registered')
+                        ->where('customer_email', Session::get('customer_email'))
+                        ->first();
+
+        $this->sendVerificationMail($user, $user->customer_email);
+        return redirect()->route('email-verify');
+    }
+
+    public function email_verification(Request $request, $email){
+
+        $user = DB::table('tbl_customers_registered')
+                        ->where('customer_email', $email)
+                        ->update(['email_verified_at' => now()]);
+        return redirect()->route('home');
+    }
+
+    private function sendVerificationMail($user, $email)
+    {
+        Mail::to($email)->send(new VerificationMail($user));
     }
 
 
@@ -69,8 +99,7 @@ class CheckoutController extends Controller
         $data['shipping_address']=$request->shipping_address;
         $data['shipping_phone_number']=$request->shipping_phone_number;
         $data['shipping_city']=$request->shipping_city;
-
-       $shipping_id = DB::table('tbl_shipping')
+        $shipping_id = DB::table('tbl_shipping')
                     ->insertGetId($data);
                     Session::put('shipping_id', $shipping_id);
                     return Redirect('/payment');
@@ -91,6 +120,7 @@ class CheckoutController extends Controller
                                 Session::put('customer_id',$result->customer_id);
                                 Session::put('customer_email',$result->customer_email);
                                 Session::put('phone_number',$result->phone_number);
+                                Session::put('customer_name',$result->customer_name);
                                 Session::put('message','Login successfully');
                                 return Redirect::to('/checkout');
                             }else{
@@ -100,12 +130,55 @@ class CheckoutController extends Controller
 
                         }
 
-                        //for profile as user side
-                        public function profile()
-                        {
-                            $this->CustomerAuthCheck();
-                            return view('pages.customer_profile');
+    //for profile as user side
+    public function profile()
+    {
+        $this->CustomerAuthCheck();
+        return view('pages.customer_profile');
+    }
+                public function forget_password()
+                {
+                    return view('pages.forget_password');
+                }
+
+                public function send_email_reset(Request $request)
+                    {
+                        $user = DB::table('tbl_customers_registered')
+                        ->where('customer_email', $request->email)
+                        ->first();
+                        if($user){
+                            Mail::to($user->customer_email)->send(new ResetMail($user));
+                            return redirect()->back()->withSuccess('Reset Mail sent');
+                        }else {
+                            return redirect()->back()->withError('Email doesnt exist');
                         }
+                    }
+
+                public function show_reset_password_form(Request $request, $email){
+                    return view('pages.reset_password')
+                            ->withEmail($email); 
+                }              
+
+            public function reset_password(Request $request){
+                $this->validate($request, [
+                    'email' => 'required|email',
+                    'password' => 'required|min:8|confirmed',
+                ]);
+               $user=DB::table('tbl_customers_registered')
+                    ->update(['password' => md5($request->password)]);
+
+                if($user){
+                    return redirect()->route('home')->withMessage('Password Updated Successfully');
+                }
+                else
+                {    
+                    return redirect()->route('home')->withMessage('Password Incorrect');
+                }
+            }
+
+
+
+                
 
              public function payment()
             {
@@ -149,12 +222,11 @@ class CheckoutController extends Controller
                         $order_detaildata['product_name']=$d_content->name;
                         $order_detaildata['product_price']=$d_content->price;
                         $order_detaildata['product_sales_quantity']=$d_content->qty;
-                        
-                        DB::table('tbl_order_details')
+                            DB::table('tbl_order_details')
                                     ->insert($order_detaildata);
                     }
-                    Cart::destroy();//deleting the cart after notification of contacting...
-                    return view('pages.handcash', compact('payment_gateway'));
+                        Cart::destroy();//deleting the cart after notification of contacting...
+                        return view('pages.handcash', compact('payment_gateway'));
                     
 
                 }else{
@@ -164,15 +236,20 @@ class CheckoutController extends Controller
                     $index = 0;
                     $total_price = 0;
 
+                    
+                    
                     foreach($content as $d_content)
                     {
+                        
+                        
                         $order_detaildata['product'][$index]['id']=$d_content->id;
                         $order_detaildata['product'][$index]['name']=$d_content->name;
                         $order_detaildata['product'][$index]['price']=$d_content->price;
                         $order_detaildata['product'][$index]['sales_quantity']=$d_content->qty;
-                        $total_price += doubleval($d_content->price);
+                        $total_price += doubleval($d_content->price) * intval($d_content->qty);
                         $index++;
                     }
+                    
                     $shipping_id=Session::get('shipping_id');
                     $profile_get=DB::table('tbl_shipping')
                                         ->where('shipping_id', $shipping_id)
@@ -228,71 +305,67 @@ class CheckoutController extends Controller
 
                     //update payment data
                     $paydata =array();
-                $paydata['payment_status']='approved';
-                $paydata['payment_data'] = json_encode($paymentDetails);
+                    $paydata['payment_status']='approved';
+                    $paydata['payment_data'] = json_encode($paymentDetails);
 
-                $payment_id=DB::table('tbl_payment')
-                        ->where('payment_id',$payment_id)
-                        ->update($paydata);
-                
-                    Cart::destroy();//deleting the cart after notification of contacting...
-
-                   echo "success";
+                    $payment_id=DB::table('tbl_payment')
+                            ->where('payment_id',$payment_id)
+                            ->update($paydata);
+                            Cart::destroy();//deleting the cart after notification of contacting...
+                            return view('pages.payment_confirmation_page');
             }
 
-
-            
 
             //profile edit function
-            public function edit_profile($customer_id)
+     public function edit_profile($customer_id)
             {
                 $profile_info=DB::table('tbl_customers_registered')
-                ->where('customer_id', $customer_id)
-                ->first();
+                        ->where('customer_id', $customer_id)
+                        ->first();
 
                 $profile_info=view('pages.profile_edit_info')
-                ->with('profile_info', $profile_info);
-                 return view('layout')
-                 ->with('pages.profile_edit_info', $profile_info);
+                        ->with('profile_info', $profile_info);
+                        return view('layout')
+                        ->with('pages.profile_edit_info', $profile_info);
 
-                // return view('pages.profile_edit_info');
+                        // return view('pages.profile_edit_info');
             }
 
 
 
 
-             //Shipping details edit function
-             public function edit_shipping($shipping_id)
-             {
-                 $shipping_info=DB::table('tbl_shipping')
-                 ->where('shipping_id', $shipping_id)
-                 ->first();
- 
-                 $shipping_info=view('pages.shipping_edit_info')
-                 ->with('shipping_info', $shipping_info);
-                  return view('layout')
-                  ->with('pages.shipping_edit_info', $shipping_info);
- 
-                 // return view('pages.shipping_edit_info');
-             }
-
-            public function update_customer_profile(Request $request, $customer_id)
+            //Shipping details edit function
+            public function edit_shipping($shipping_id)
             {
+                $shipping_info=DB::table('tbl_shipping')
+                        ->where('shipping_id', $shipping_id)
+                        ->first();
+
+                $shipping_info=view('pages.shipping_edit_info')
+                        ->with('shipping_info', $shipping_info);
+                        return view('layout')
+                        ->with('pages.shipping_edit_info', $shipping_info);
+
+                        // return view('pages.shipping_edit_info');
+            }
+
+        public function update_customer_profile(Request $request, $customer_id)
+        {
                 $data = array();
                 $data['customer_name']=$request->customer_name;
                 // $data['customer_email']=$request->customer_email;
                 $data['phone_number']=$request->phone_number;
 
                 DB::table('tbl_customers_registered')
-                ->where('customer_id', $customer_id)
-                ->update($data);
-                Session::get('message','You Updated Your Profile Successfully');
-                return Redirect::to('/profile_view');
-            }
+                        ->where('customer_id', $customer_id)
+                        ->update($data);
+                        Session::get('message','You Updated Your Profile Successfully');
+                        return Redirect::to('/profile_view');
+        }
 
-            //update customer shipping detils
-            public function update_customer_shipping_details(Request $request, $shipping_id)
-            {
+        //update customer shipping detils
+        public function update_customer_shipping_details(Request $request, $shipping_id)
+        {
                 $data = array();
                 $data['shipping_first_name']=$request->shipping_first_name;
                 // $data['shipping_email']=$request->shipping_email;
@@ -302,80 +375,80 @@ class CheckoutController extends Controller
                 $data['shipping_city']=$request->shipping_city;
 
                 DB::table('tbl_shipping')
-                ->where('shipping_id', $shipping_id)
-                ->update($data);
-                Session::get('message','You Updated Your Shipping Details Successfully');
-                return Redirect::to('/profile_view');
-            }
+                        ->where('shipping_id', $shipping_id)
+                        ->update($data);
+                        Session::get('message','You Updated Your Shipping Details Successfully');
+                        return Redirect::to('/profile_view');
+        }
 
-            //updating customer password
-            public function preview_page_password($customer_id)
-            {
+        //updating customer password
+        public function preview_page_password($customer_id)
+        {
                 $this->CustomerAuthCheck();
-                
+            
                 $password_info=DB::table('tbl_customers_registered')
-                ->where('customer_id', $customer_id)
-                ->first();
+                        ->where('customer_id', $customer_id)
+                        ->first();
 
                 $password_info=view('pages.password_page')
-                ->with('password_info', $password_info);
-                 return view('layout')
-                 ->with('pages.password_page', $password_info);
-                // return view('pages.password_page');
-            }
+                        ->with('password_info', $password_info);
+                        return view('layout')
+                        ->with('pages.password_page', $password_info);
+                        // return view('pages.password_page');
+        }
 
-            
-            //password update
-            public function update_password(Request $request, $customer_id)
+        
+        //password update
+        public function update_password(Request $request, $customer_id)
+        {
+                $old_password=$request->password;
+                $new_password=$request->new_password;
+
+                $user=DB::table('tbl_customers_registered')
+                        ->where('customer_id', $customer_id)->first();
+
+            if( md5($old_password) == $user->password && $new_password)
             {
-               $old_password=$request->password;
-               $new_password=$request->new_password;
+                $new_password = md5($new_password);
+                DB::table('tbl_customers_registered')
+                        ->where('customer_id', $customer_id)
+                        ->update(['password' => $new_password]);
 
-               $user=DB::table('tbl_customers_registered')
-                                    ->where('customer_id', $customer_id)->first();
-
-                if( md5($old_password) == $user->password && $new_password)
-                {
-                    $new_password = md5($new_password);
-                    DB::table('tbl_customers_registered')
-                                    ->where('customer_id', $customer_id)
-                                    ->update(['password' => $new_password]);
-
-                    return redirect()->back()->withMessage('Password Updated Successfully');
-                }
-                else
-                {    
-                    return redirect()->back()->withMessage('Password Incorrect');
-                }
+                        return redirect()->back()->withMessage('Password Updated Successfully');
             }
-
-
-            
-            // public function sslapi()
-            // {
-
-            // }
-
-
-
-        //customer logout function
-        public function customer_logout()
-        {
-            Session::flush();
-            return Redirect::to('/');
-           
+            else
+            {    
+                        return redirect()->back()->withMessage('Password Incorrect');
+            }
         }
 
-        // customer login validation and pages view control
-        public function CustomerAuthCheck()
-        {
-            $customer_id=Session::get('customer_id');
-            if($customer_id) {
+
+        
+        // public function sslapi()
+        // {
+
+        // }
+
+
+    //customer logout function
+    public function customer_logout()
+    {
+                    Session::flush();
+                    return Redirect::to('/');
+        
+    }
+
+
+    // customer login validation and pages view control
+    public function CustomerAuthCheck()
+    {
+                $customer_id=Session::get('customer_id');
+                if($customer_id) {
                 return;
-            }else{
+        }else{
                 return Redirect::to('/')->send();
-            }
         }
+    }
 
 
 }

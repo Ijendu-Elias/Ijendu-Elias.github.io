@@ -90,6 +90,8 @@ Route::post('/update_product/{product_id}','ProductController@update_pro');
 //managege Order
 Route::get('/manage_order','ProductController@manage_order');
 Route::get('/view_order/{order_id}','ProductController@view_order');
+//deleting mange order
+Route::get('/delete_order/{order_id}','ProductController@delete_order');
 
 
 
@@ -125,17 +127,34 @@ Route::post('/update_cart_item','CartingController@update_cart');
 Route::get('/login_checking','CheckoutController@login_page');
 //customer page registration page route
 Route::post('/customer_register','CheckoutController@register');
+//forget password
+Route::get('/forget-password', 'CheckoutController@forget_password');
+//send email route
+Route::post('/send_mail', 'CheckoutController@send_email_reset');
+//reset password page
+Route::get('/reset-password/{email}', 'CheckoutController@show_reset_password_form')->name('reset-password-form');
+
+//reset password page
+Route::post('/reset-password', 'CheckoutController@reset_password')->name('reset-password');
+
+Route::get('/email-verify', 'CheckoutController@email_verify')->name('email-verify'); // show page
+Route::get('/email-verify-resend', 'CheckoutController@email_verify_resend')->name('email-verify-resend'); // resend verification
+Route::get('/email-verification/{email}', 'CheckoutController@email_verification')->name('email-verification'); // verification
+
+
+
+
 //checkout route
-Route::get('/checkout','CheckoutController@checkout_page');
+Route::get('/checkout','CheckoutController@checkout_page')->middleware(['verify']);
 //Save Shipping details route
-Route::post('/Save_shipping_detail','CheckoutController@shiping_details_store');
+Route::post('/Save_shipping_detail','CheckoutController@shiping_details_store')->middleware(['verify']);
 //Login route
 Route::post('/customer_login','CheckoutController@customer_login');
 //Logout route
 Route::get('/customer_logout','CheckoutController@customer_logout');
 //payment route
 Route::get('/payment','CheckoutController@payment');
-// route
+// route money
 Route::post('/order_place','CheckoutController@order_with_cash');
 
 
@@ -154,12 +173,8 @@ Route::get('/edit-shipping/{shipping_id}','CheckoutController@edit_shipping');
 Route::post('/update_profile/{customer_id}','CheckoutController@update_customer_profile');
 //update customer shipping details
 Route::post('/update_shipping_details/{shipping_id}','CheckoutController@update_customer_shipping_details');
-
-
-
 //testing brian.........
 Route::get('/test_Brain','testingController@bussiness_test' );
-
 
 //comments routes
 Route::get('/chatting_forum','BlogController@comment_now');
@@ -167,10 +182,18 @@ Route::get('/chatting_forum','BlogController@comment_now');
 Route::post('save_forum','BlogController@save');
 //leave a reply
 Route::post('/reply','BlogController@reply_back');
-
+//Blog Post
+Route::get('/Blogging', 'BlogController@blog');
+//Adding Blog Category
+Route::get('/add_category', 'BlogController@add_blog_category');
+//Storing blog_Category
+Route::post('/_category', 'BlogController@store_blog_category');
+//Store Blog post
+Route::post('/_post', 'BlogController@store_blog_post');
 
 
 // Laravel 5.1.17 and above
 Route::get('/payment/callback', 'CheckoutController@handleGatewayCallback');
+
 
 

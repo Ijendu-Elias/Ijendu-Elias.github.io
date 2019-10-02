@@ -179,12 +179,23 @@ class ProductController extends Controller
         $this->AdminAuthCheck();
         $all_order_info=DB::table('tbl_order')
                             ->join('tbl_customers_registered','tbl_order.customer_id','=','tbl_customers_registered.customer_id')
-                            ->select('tbl_order.*','tbl_customers_registered.customer_name')
-                            ->paginate(3);
+                            ->join('tbl_payment','tbl_order.payment_id','=','tbl_payment.payment_id')
+                            ->select('tbl_order.*','tbl_customers_registered.customer_name', 'tbl_payment.*')
+                            ->paginate(10);
 
                         $manage_order=view('admin.manage_order')->with('all_order_info',$all_order_info);
                         return view('admin_layout')->with('admin.manage_order', $manage_order);
 
+    }
+
+    public function delete_order(Request $request, $order_id)
+    {
+        
+        DB::table('tbl_order')
+            ->where('order_id', $order_id)
+            ->delete();
+            Session::get('message','Deleted Product Successfully');
+            return Redirect::to('/manage_order');
     }
 
 

@@ -20,7 +20,8 @@
                         <input type="password" placeholder="password" name="password" required/>
                         <button type="submit" class="btn btn-default">Login</button>
                         <span>
-                        <input type="checkbox" class="checkbox" value="your agree to our terms and condition" required/><a href="#">Terms and conditions Apply</a>
+                        <input type="checkbox" class="checkbox" value="your agree to our terms and condition" required/><a href="#">Terms and conditions Apply</a> <br>
+                        <a href="{{URL::to('/forget-password')}}"  style="color:red"><i class="fa fa-arrow-right" style="color:skyblue"></i>&nbsp; &nbsp; &nbsp;  Forget Password?</a>
                         </span>
                                
                     </form>
@@ -35,13 +36,22 @@
             <div class="col-sm-4">
                 <div class="signup-form"><!--sign up form-->
                     <h2>Dont Have Account?</h2>
+                    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
                 <form action="{{URL::to('/customer_register')}}"  method="POST">
                     {{ csrf_field() }}
-                      <input type="text" placeholder="Name" name="customer_name" required/>
-                        <input type="email" placeholder="Email Address" name="customer_email"required/>
-                        <input type="text" name="phone_number" placeholder="Enter your phone Number"required />
+                      <input type="text" placeholder="Name" value="{{old('customer_name')}}" name="customer_name" required/>
+                <input type="email" placeholder="Email Address" value="{{old('customer_email')}}" name="customer_email"required/>
+                        <input type="text" name="phone_number" value="{{old('phone_number')}}" placeholder="Enter your phone Number"required />
                         <input type="password" name="password" placeholder="Enter your Password" required id="password" />
-                        <input type="password" name="confirm_password" placeholder="Confirm Password" required id="confirm_password"  />
+                        <input type="password" name="password_confirmation" placeholder="Confirm Password" required id="confirm_password"  />
                         <button type="submit" class="btn btn-default">Signup</button>
                     </form>
                 </div><!--/sign up form-->

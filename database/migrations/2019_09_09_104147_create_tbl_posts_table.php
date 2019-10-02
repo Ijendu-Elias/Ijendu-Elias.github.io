@@ -15,7 +15,7 @@ class CreateTblPostsTable extends Migration
     {
         Schema::create('tbl_posts', function (Blueprint $table) {
             $table->increments('post_id');
-            $table->integer('customer_id');
+            $table->integer('blog_category_id');
             $table->string('title');
             $table->string('post_body');
             $table->string('post_image');

@@ -98,7 +98,7 @@
 
 <body>
 	<header id="header"><!--header-->
-		<div class="alert-success">
+		<p class="alert-success" style="float:right">
 				<?php
 				   $message=Session::get('message');
 				
@@ -106,16 +106,17 @@
 					echo $message;
 					Session::put('message', null);
 				?>
-		</div>
+		</p>
 		<div class="header_top"><!--header_top-->
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-6">
 						<div class="contactinfo">
+				
 							<ul class="nav nav-pills">
-								<li><a href="{{URL::to('/profile_view')}}"><i class="fa fa-phone"></i><b>USERS: {{ Session::get('phone_number') }}&nbsp;<span style="color:red">ID:</span> {{ Session::get('customer_id') }} </b>&nbsp;  <span style="color:orange">|</span><i class="fa fa-phone"><b>ADMIN: +234 703 544 9154</b></i></a></li>
-								<li><a href="{{URL::to('/profile_view')}}"><i class="fa fa-envelope"></i>{{ Session::get('customer_email') }} </a></li>
-							</ul>
+							<li><a href="{{URL::to('/profile_view')}}"><b class="fa fa-envelope"> {{ Session::get('customer_email') }} &nbsp;  <span style="color:orange">|</span>&nbsp;<b class="fa fa-phone"></b>{{ Session::get('phone_number') }} </b></a></li>
+								<li><a href="{{URL::to('/profile_view')}}"><i class="fa fa-user"></i>{{ Session::get('customer_name') }}</a></li>
+						</ul>
 						</div>
 					</div>
 					<div class="col-sm-6">
@@ -245,14 +246,17 @@
 								<li><a href="{{URL::to('/')}}" class="active"><i class="fa fa-home" style="font-size:150%; color:black;"></i></a></li>
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a href="shop.html">Products</a></li>
+								<?php $customer_id=Session::get('customer_id'); ?>
+								<?php if($customer_id!= NULL){?>	
+										<li><a href="shop.html">Products</a></li>
 										<li><a href="product-details.html">Product Details</a></li> 
-										<li><a href="checkout.html">Checkout</a></li> 
+										<li><a href="checkout.html">Checkout</a></li>
+								<?php } ?> 
 										<li><a href="{{URL::to('/display_product_page')}}">Cart</a></li> 
 										{{-- <li><a href="login.html">Login</a></li>  --}}
                                     </ul>
                                 </li> 
-								<li class="dropdown"><a href="#">Read Blog Post<i class="fa fa-angle-down"></i></a>
+								<li class="dropdown"><a href="{{URL::to('/Blogging')}}">Read Blog Post<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
 										<?php if($customer_id != NULL){?>
 											<li><a href="{{URL::to('/chatting_forum')}}">Chatting Forum </a></li>
@@ -299,12 +303,11 @@
 										?>
 											<div class="item <?php echo $count == 0 ? "active" : "" ; $count++;?>">
 												<div class="row">
-													<div class="col-sm-6">
-								<h1 class="hs3" style="color:skyblue; font-weight:bolder ">BUKATAN</span><span style="color:red; font-weight:bolder;" class="hs4"> GLOBAL</span><span style="color:green; font-weight:bolder" class="hs5">SERVICE</h3><hr style="">
-															{{-- <H3><span style="color:skyblue;">B</span> <span style="color:red">G</span> <span style="color:green">S</H1><hr> --}}
+													<div class="col-sm-6"><hr>
+												<h1 class="hs3" style="color:skyblue; font-weight:bolder; background:skyblue; text-align:center;border-radius:10px; ">BUKATAN<span style="color:red">-</span><span style="color:green">_</span><span style="color:orange">-</span><span style="color:red">_</span><span style="color:green">-</span><span style="color:orange">_</span><span style="color:red">-</span><span style="color:green">_</span><span style="color:orange">-</span><span style="color:red">_</span><span style="color:green">-</span><span style="color:orange">_</span></span><hr ><span style="color:red; font-weight:bolder;" class="hs4"> GLOBAL</span><span style="color:green; font-weight:bolder" class="hs5">SERVICE</h3><hr>
+													<h1 style="color:white;;border-radius:0px; text-align:center; font-weight:bolder"><span style="color:skyblue;" class="fa fa-arrow-down">Get Your Order In</span><hr> <span style="font-size:20px; color:white;" class="hs1">Less Than 7 Days </span></h1><hr>
 														<h2 style="color:orange; font-weight:bolder" class="hs2">Free Online Store</h2> <hr>
-														
-														<marquee><p style="color:skyblue; font-weight:bolder" class="hs1">We Sell All High Quality Products 100% Online Secure </p></marquee><hr>
+														<marquee><p style="color:skyblue; font-weight:bolder" class="hs1"><i style="color:skyblue; font-size:30px;">1</i> <i style="color:green">100%</i> <i>Faster</i><i style="color:green; font-size:40px">2</i> <i style="color:orange">Pay</i> <i>On</i> <i style="color:orange">Delivery</i> <i style="color:orange; font-size:50px;">3</i> <i>Home</i> <i style="color:skyblue">Delivery</i> &nbsp;<i class="fa fa-thumbs-up" style="font-size:60px;"></i> </p></marquee><hr>
 														<button type="button" class="btn btn-default get" style="background:gray;">Get it now</button>
 													</div>
 													<div class="col-sm-6">

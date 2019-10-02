@@ -65,7 +65,7 @@
                                              </td>
                                              <td>
                                              <a href="{{URL::to('/edit-slide/'.$slide->slider_id) }}" class="edit_slide btn btn-warning">
-                                                 <i class="fa fa-edit"></i>
+                                                 <i class="fa fa-eye"></i>
                                                  </a>
                                             </td>
                                         </tr>

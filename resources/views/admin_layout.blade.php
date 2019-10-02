@@ -12,8 +12,8 @@
             <!-- you need to include the shieldui css and js assets in order for the charts to work -->
             <link rel="stylesheet" type="text/css" href="http://www.shieldui.com/shared/components/latest/css/light-bootstrap/all.min.css" />
             <link id="gridcss" rel="stylesheet" type="text/css" href="http://www.shieldui.com/shared/components/latest/css/dark-bootstrap/all.min.css" />
-            <script type="text/javascript" src="http://www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
-            <script type="text/javascript" src="http://www.prepbootstrap.com/Content/js/gridData.js"></script>
+            {{-- <script type="text/javascript" src="http://www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
+            <script type="text/javascript" src="http://www.prepbootstrap.com/Content/js/gridData.js"></script> --}}
 
 </head>
 <body>
@@ -44,7 +44,7 @@
                     <li><a href="{{URl::to('/all_slider')}}"><i class="fa fa-globe"></i>All Slider</a></li>
                     <li><a href="{{URl::to('/manage_order')}}"><i class="fa fa-arrow-right"></i>Manage Order</a></li>
                     <li><a href="bootstrap-elements.html"><i class="fa fa-arrow-right"></i> Shop Names</a></li>
-                    <li><a href="bootstrap-grid.html"><i class="fa fa-table"></i>Delivery Man</a></li>
+                    <li><a href="bootstrap-grid.html"><i class="fa fa-table"></i>Manage Logged Comments</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right navbar-user">
                     <li class="dropdown messages-dropdown">
@@ -92,7 +92,7 @@
             </nav>
 @yield('admin_content')
             <!-- /#wrapper -->
-            <script type="text/javascript">
+            {{-- <script type="text/javascript">
                 jQuery(function ($) {
                     var performance = [12, 43, 34, 22, 12, 33, 4, 17, 22, 34, 54, 67],
                     visits = [123, 323, 443, 32],
@@ -159,7 +159,7 @@
                      ]
                     });            
                 });        
-            </script>
+            </script> --}}
 
             <script>
                 //delete javascript to ask you if you wanna delete? not we defined the class in delete side
