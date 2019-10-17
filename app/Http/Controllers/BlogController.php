@@ -119,6 +119,36 @@ class BlogController extends Controller
                         }
 
 
+                        public function edit_blog($post_id)
+                        {
+                            $this->CustomerAuthCheck();
+
+                            $blog_info=DB::table('tbl_posts')
+                            ->where('post_id', $post_id)
+                            ->first();
+
+                            $blog_info=view('blogs.edit_post')
+                            ->with('blog_info', $blog_info);
+                            return view('layout')
+                            ->with('layout.edit_post', $blog_info);
+                        }
+
+                        public function update_blog(Request $request, $post_id)
+                        {
+                            echo $post_id;
+                        }
+
+
+
+
+                        public function delete_blog()
+                        {
+                            echo "hello am delete post";
+                        }
+
+
+
+
                 // customer login validation and pages view control
                 public function CustomerAuthCheck()
                 {

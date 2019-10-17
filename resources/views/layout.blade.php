@@ -274,9 +274,14 @@
 						</div>
 					</div>
 					<div class="col-sm-3">
-						<div class="search_box pull-right">
-							<input type="text" placeholder="Search"/>
-						</div>
+						<form action="{{URL::to('/search')}}" method="GET">
+							{{ csrf_field() }}
+							<div class="search_box pull-right" style="border:0px; ">
+								<input type="text" name="search_now" placeholder="Search...." />
+								{{-- <button class="fa fa-search" style="background:white; border:0px;"></button> --}}
+			
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -304,10 +309,10 @@
 											<div class="item <?php echo $count == 0 ? "active" : "" ; $count++;?>">
 												<div class="row">
 													<div class="col-sm-6"><hr>
-												<h1 class="hs3" style="color:skyblue; font-weight:bolder; background:skyblue; text-align:center;border-radius:10px; ">BUKATAN<span style="color:red">-</span><span style="color:green">_</span><span style="color:orange">-</span><span style="color:red">_</span><span style="color:green">-</span><span style="color:orange">_</span><span style="color:red">-</span><span style="color:green">_</span><span style="color:orange">-</span><span style="color:red">_</span><span style="color:green">-</span><span style="color:orange">_</span></span><hr ><span style="color:red; font-weight:bolder;" class="hs4"> GLOBAL</span><span style="color:green; font-weight:bolder" class="hs5">SERVICE</h3><hr>
-													<h1 style="color:white;;border-radius:0px; text-align:center; font-weight:bolder"><span style="color:skyblue;" class="fa fa-arrow-down">Get Your Order In</span><hr> <span style="font-size:20px; color:white;" class="hs1">Less Than 7 Days </span></h1><hr>
-														<h2 style="color:orange; font-weight:bolder" class="hs2">Free Online Store</h2> <hr>
-														<marquee><p style="color:skyblue; font-weight:bolder" class="hs1"><i style="color:skyblue; font-size:30px;">1</i> <i style="color:green">100%</i> <i>Faster</i><i style="color:green; font-size:40px">2</i> <i style="color:orange">Pay</i> <i>On</i> <i style="color:orange">Delivery</i> <i style="color:orange; font-size:50px;">3</i> <i>Home</i> <i style="color:skyblue">Delivery</i> &nbsp;<i class="fa fa-thumbs-up" style="font-size:60px;"></i> </p></marquee><hr>
+												<h1 class="hs3" style="color:skyblue; font-weight:bolder; background:skyblue; text-align:center;border-radius:10px; float:left "> BUKATAN <br clear="all"><marquee behavior="Alternate" direction=""><span style="color:green">_</span><span style="color:orange"></span><span style="color:red">_</span><span style="color:green"></span><span style="color:orange">_</span><span style="color:red"></span><span style="color:green">_</span><span style="color:orange"></span><span style="color:red">_</span><span style="color:green"></span><span style="color:orange">_</span></span></marquee><hr ><span style="color:red; font-weight:bolder;" class="hs4"> GLOBAL</span><span style="color:green; font-weight:bolder" class="hs5">SERVICE</h3><hr>
+													<h1 style="color:white;;border-radius:0px; text-align:center; font-weight:bolder"> <span style="font-size:20px; color:white;" class="hs1"><marquee behavior="slide" direction="">Less Than 7 Days</marquee>  </span></h1><hr>
+														<h2 style="color:orange; font-weight:bolder" class="hs2"><marquee behavior="slide" direction="right">Free Online Store</marquee> </h2> <hr>
+														<marquee behavior="Alternate" direction=""><p style="color:skyblue; font-weight:bolder" class="hs1"><i style="color:skyblue; font-size:30px;">1</i> <i style="color:green">100%</i> <i>Faster</i><i style="color:green; font-size:40px">2</i> <i style="color:orange">Pay</i> <i>On</i> <i style="color:orange">Delivery</i> <i style="color:orange; font-size:50px;">3</i> <i>Home</i> <i style="color:skyblue">Delivery</i> &nbsp; </p></marquee><hr>
 														<button type="button" class="btn btn-default get" style="background:gray;">Get it now</button>
 													</div>
 													<div class="col-sm-6">

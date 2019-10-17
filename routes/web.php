@@ -12,6 +12,10 @@
 */
 //frontend side..................................
 Route::get('/', 'HomeController@index')->name('home');
+//search bar by categories
+Route::get('/search', 'HomeController@search')->name('search');
+//search bar by products name
+// Route::get('/search', 'HomeController@search_by_pro');
 
 //product category wise at layout user side
 Route::get('/category_wise/{category_id}', 'HomeController@show_category_product_wise');
@@ -190,7 +194,14 @@ Route::get('/add_category', 'BlogController@add_blog_category');
 Route::post('/_category', 'BlogController@store_blog_category');
 //Store Blog post
 Route::post('/_post', 'BlogController@store_blog_post');
+//edit post
+Route::get('/edit-post/{post_id}', 'BlogController@edit_blog');
+//update blog post
+Route::post('_post_update/{post_id}','BlogController@update_blog');
 
+
+//edit post
+Route::get('/delete-post/{post_id}', 'BlogController@delete_blog');
 
 // Laravel 5.1.17 and above
 Route::get('/payment/callback', 'CheckoutController@handleGatewayCallback');

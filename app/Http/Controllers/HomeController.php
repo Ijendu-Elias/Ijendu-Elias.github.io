@@ -14,7 +14,7 @@ class HomeController extends Controller
     public function index()
     {
         // $this->CustomerAuthCheck();
-        //$allproduct_info=DB::table('tbl_category')->get();
+        //$search=DB::table('tbl_category')->get();
         $all_published_product=DB::table('tbl_products')
                     ->join('tbl_category','tbl_products.category_id','=','tbl_category.category_id')
                     ->join('manufacture','tbl_products.manufacture_id','=','manufacture.manufacture_id')
@@ -82,6 +82,42 @@ return view('layout')
 ->with('pages.product_detail', $manage_pro);
     // return view('pages.product_detail');
 }
+
+// public function search(Request $request)
+// {
+
+//     $search=DB::table('tbl_category')
+//     ->join('tbl_products','tbl_category.category_id', '=', 'tbl_products.category_id')
+//     ->select('tbl_products.*', 'tbl_category.*')
+//     ->where('category_name', 'like', "%{$request->search_now}%")
+//     ->get();
+
+//     // $search=DB::table('tbl_products')
+//     // ->select('tbl_products.*')
+//     // ->where('product_name', 'like', "%{$request->search_now}%")
+//     // ->get();
+
+//     // dd($search);
+
+//  $manage_search=view('pages.search_page')->with('search',$search);
+// return view('pages.search_page')->withProducts($search);
+
+
+// }
+
+
+public function search(Request $request)
+{
+     $search=DB::table('tbl_products')
+    ->select('tbl_products.*')
+    ->where('product_name', 'like', "%{$request->search_now}%")
+    ->get();
+$manage_search=view('pages.search_page')->with('search',$search);
+return view('pages.search_page')->withProducts($search);
+
+
+}
+
 
 
  // customer login validation and pages view control

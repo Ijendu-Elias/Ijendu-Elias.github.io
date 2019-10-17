@@ -52,6 +52,12 @@
                         <input type="text" name="phone_number" value="{{old('phone_number')}}" placeholder="Enter your phone Number"required />
                         <input type="password" name="password" placeholder="Enter your Password" required id="password" />
                         <input type="password" name="password_confirmation" placeholder="Confirm Password" required id="confirm_password"  />
+                        <div class="control-group hidden-phone">
+                            <label class="control-label" for="textarea2" style="color:red;">Yes! I agree to The Terms And conditions?</label>
+                            <div class="controls">
+                                <input type="checkbox" name="suspension" checked value="1" style="cursor:pointer">
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-default">Signup</button>
                     </form>
                 </div><!--/sign up form-->

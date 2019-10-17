@@ -181,6 +181,9 @@
                                                 <th>Users Email</th>
                                                 <th>Users Contacts</th>
                                                 <th>Users Varified Status</th>
+                                                <th>Deactivate</th>
+                                                <th>Activate</th>
+
                                             </tr>
                                             <?php
                                             $adm_users=DB::table('tbl_customers_registered')
@@ -192,6 +195,26 @@
                                                     <td>{{$view4->customer_email}}</td>
                                                     <td>{{$view4->phone_number}}</td>
                                                     <td>{{$view4->email_verified_at}}</td>
+                                                    <td>
+                                                        @if($view4->suspension==1)
+                                                        <i class="btn btn-primary fa fa-globe">Access</i>
+                                                        @else
+                                                        <i class="btn btn-danger fa fa-close">Suspend</i>
+                                                        @endif
+                                                    </td>
+                                                     <!-- generating unactive button engines-->
+                                                    <td class="center">
+                                                         @if($view4->suspension==1)
+                                                        <a href="{{URL::to('/unactive_user/'.$view4->customer_id) }}" class="deactivate_user btn btn-danger">
+                                                        <i class="fa fa-thumbs-down"></i>
+                                                    </a>
+                                                    @else
+                                                    <!-- generating active button engines-->
+                                                    <a href="{{URL::to('/active_user/'.$view4->customer_id) }}" class=" activate_user btn btn-primary">
+                                                    <i class="fa fa-thumbs-up"></i>
+                                                    </a>
+                                                    @endif
+                                                    </td>
                                             
                                             </tr>
                                             

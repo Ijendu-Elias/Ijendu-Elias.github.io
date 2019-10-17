@@ -10,10 +10,13 @@ use App\Mail\ResetMail;
 use App\Mail\VerificationMail;
 use Session;
 use Cart;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Validator;
 use\Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Mail;
 use Paystack;
+use RuntimeException;
+
 session_start();
 
 class CheckoutController extends Controller
@@ -37,17 +40,15 @@ class CheckoutController extends Controller
         $data['customer_name']=$request->customer_name;
         $data['customer_email']=$request->customer_email;
         $data['phone_number']=$request->phone_number;
+        $data['suspension']=$request->suspension;
         $data['password'] = md5($request->password);
-
-        
-
-        
         $customer_id=DB::table('tbl_customers_registered')
                             ->insertGetid($data);
                             Session::put('customer_id', $customer_id);
                             Session::put('customer_email',$request->customer_email);
                             Session::put('customer_name',$request->customer_name);
                             Session::put('phone_number', $request->phone_number);
+                            Session::put('message', 'Congratulations! Check Your Email For Varification');
                            return Redirect::to('/checkout');
     }
 
@@ -56,23 +57,32 @@ class CheckoutController extends Controller
     }
     
 
-    public function email_verify_resend(Request $request){
-
+    public function email_verify_resend(Request $request)
+    {
         $user = DB::table('tbl_customers_registered')
                         ->where('customer_email', Session::get('customer_email'))
                         ->first();
-
-        $this->sendVerificationMail($user, $user->customer_email);
-        return redirect()->route('email-verify');
+                        $this->sendVerificationMail($user, $user->customer_email);
+                        return redirect()->route('email-verify');
     }
 
-    public function email_verification(Request $request, $email){
 
+
+    public function email_verification(Request $request, $email)
+    {
+        try{
+            $email = decrypt($email);
+        }catch(RuntimeException $ex){
+            return redirect('/');
+        }
+        
         $user = DB::table('tbl_customers_registered')
                         ->where('customer_email', $email)
                         ->update(['email_verified_at' => now()]);
         return redirect()->route('home');
     }
+
+    
 
     private function sendVerificationMail($user, $email)
     {
@@ -155,6 +165,11 @@ class CheckoutController extends Controller
                     }
 
                 public function show_reset_password_form(Request $request, $email){
+                    try{
+                        $email = decrypt($email);
+                    }catch(RuntimeException $ex){
+                        return redirect('/');
+                    }
                     return view('pages.reset_password')
                             ->withEmail($email); 
                 }              
@@ -229,6 +244,9 @@ class CheckoutController extends Controller
                         return view('pages.handcash', compact('payment_gateway'));
                     
 
+
+
+
                 }else{
                     $order_detaildata=array();
                     $order_detaildata['order_id']=$order_id;
@@ -236,8 +254,6 @@ class CheckoutController extends Controller
                     $index = 0;
                     $total_price = 0;
 
-                    
-                    
                     foreach($content as $d_content)
                     {
                         
