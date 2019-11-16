@@ -118,6 +118,45 @@ return view('pages.search_page')->withProducts($search);
 
 }
 
+public function store_users_products(Request $request)
+{
+        $user = DB::table('tbl_customers_registered')
+                        ->where('customer_email', Session::get('customer_email'))
+                        ->first();
+
+    $data['users_product_name']=$request->users_product_name;
+    $data['users_seller_name']=$request->users_seller_name;
+    $data['users_seller_phone']=$request->users_seller_phone;
+    $data['users_product_description']=$request->users_product_description;
+    $data['customer_id']=$user->customer_id;
+    
+    
+    $image=$request->file('users_image_back');
+    if($image){
+        $image_name=str_random(20);
+        $ext=strtolower($image->getClientOriginalExtension());
+        $image_full_name=$image_name.'.'.$ext;
+        // mkdir(realpath('users_sales_img/') . "/" . $image_name[0] . "/" . $image_name[1] . "/" . $image_name[2],0777);
+        $upload_path= realpath('users_sales_img/') . "/" . $image_name[0] . "/" . $image_name[1] . "/" . $image_name[2] . "/";
+        $image_url=$upload_path.$image_full_name;
+        $success=$image->move($upload_path, $image_full_name);
+
+        if($success){
+            $data['users_image_front']=$image_url;
+            DB::table('tbl_users_upload')
+                    ->insert($data);
+            Session::put('message','Image Product added by You successfully');
+            return Redirect::to('/');
+        }
+        }
+
+}
+
+public function Register_and_sell_product()
+{
+    return view('pages.Sell_Product_page');
+}
+
 
 
  // customer login validation and pages view control

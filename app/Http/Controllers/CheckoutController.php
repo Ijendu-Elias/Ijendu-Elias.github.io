@@ -79,7 +79,7 @@ class CheckoutController extends Controller
         $user = DB::table('tbl_customers_registered')
                         ->where('customer_email', $email)
                         ->update(['email_verified_at' => now()]);
-        return redirect()->route('home');
+        return redirect()->route('home')->withMessage('Congratulations! Your Email Has Been Verified Successfully');
     }
 
     
@@ -125,13 +125,14 @@ class CheckoutController extends Controller
             $result=DB::table('tbl_customers_registered')
                             ->where('customer_email', $customer_email)
                             ->where('password',$password)
+                            ->where(['suspension'=> 0])
                             ->first();
                             if($result){
                                 Session::put('customer_id',$result->customer_id);
                                 Session::put('customer_email',$result->customer_email);
                                 Session::put('phone_number',$result->phone_number);
                                 Session::put('customer_name',$result->customer_name);
-                                Session::put('message','Login successfully');
+                                Session::put('message','Login successfully, Congratulations!');
                                 return Redirect::to('/checkout');
                             }else{
                                 Session::put('message', 'Email and Password Incorrect');

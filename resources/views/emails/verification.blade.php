@@ -4,9 +4,10 @@ Hi {{ $user->customer_name}}
 Click To verifiy
 
 @component('mail::button', ['url' => $url])
-Verify Email
+YOU WELCOME TO BUKATAN ONLINE SHOPPING MALL<br>
+Please Kindly Click On this To Verify Your Email.
 @endcomponent
 
-Thanks,<br>
+Thanks,<br>@ BUKATAN TEAM!
 {{ config('app.name') }}
 @endcomponent

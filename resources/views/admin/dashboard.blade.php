@@ -181,8 +181,8 @@
                                                 <th>Users Email</th>
                                                 <th>Users Contacts</th>
                                                 <th>Users Varified Status</th>
-                                                <th>Deactivate</th>
-                                                <th>Activate</th>
+                                                <th>Users Status</th>
+                                                <th>Action</th>
 
                                             </tr>
                                             <?php
@@ -197,16 +197,16 @@
                                                     <td>{{$view4->email_verified_at}}</td>
                                                     <td>
                                                         @if($view4->suspension==1)
-                                                        <i class="btn btn-primary fa fa-globe">Access</i>
+                                                        <i class="btn btn-primary fa fa-globe">Access Granted</i>
                                                         @else
-                                                        <i class="btn btn-danger fa fa-close">Suspend</i>
+                                                        <i class="btn btn-danger fa fa-close">Access Denied</i>
                                                         @endif
                                                     </td>
                                                      <!-- generating unactive button engines-->
                                                     <td class="center">
                                                          @if($view4->suspension==1)
                                                         <a href="{{URL::to('/unactive_user/'.$view4->customer_id) }}" class="deactivate_user btn btn-danger">
-                                                        <i class="fa fa-thumbs-down"></i>
+                                                        <i class="fa fa-times"></i>
                                                     </a>
                                                     @else
                                                     <!-- generating active button engines-->

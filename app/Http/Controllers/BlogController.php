@@ -119,6 +119,39 @@ class BlogController extends Controller
                         }
 
 
+                        public function show_post_by_category($blog_category_id)
+                        {
+                            $post_by_category=DB::table('tbl_posts')
+                            ->join('_tbl_blog_category','tbl_posts.blog_category_id','=','_tbl_blog_category.blog_category_id')
+                            ->select('tbl_posts.*','_tbl_blog_category.slug')
+                            ->where('_tbl_blog_category.blog_category_id', $blog_category_id)
+                            ->get();
+                        
+                        $manage_post_by_category=view('blogs.post_category')->with('post_by_category',$post_by_category);
+                        return view('layout')
+                        ->with('blogs.post_category', $manage_post_by_category);
+                        }
+
+
+
+
+                        public function continue_reading_post($blog_category_id)
+                        {
+                            $post_by_continue=DB::table('tbl_posts')
+                            ->join('_tbl_blog_category','tbl_posts.blog_category_id','=','_tbl_blog_category.blog_category_id')
+                            ->select('tbl_posts.*','_tbl_blog_category.slug')
+                            ->where('_tbl_blog_category.blog_category_id', $blog_category_id)
+                            ->get();
+                        
+                        $manage_post_continue=view('blogs.post_continue')->with('post_by_continue',$post_by_continue);
+                        return view('layout')
+                        ->with('blogs.post_continue', $manage_post_continue);
+                        
+                        }
+
+
+
+
                         public function edit_blog($post_id)
                         {
                             $this->CustomerAuthCheck();
@@ -132,6 +165,9 @@ class BlogController extends Controller
                             return view('layout')
                             ->with('layout.edit_post', $blog_info);
                         }
+
+
+                        
 
                         public function update_blog(Request $request, $post_id)
                         {

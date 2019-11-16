@@ -7,6 +7,6 @@ This is the reset link you request for.
 Reset Password
 @endcomponent
 
-Thanks,<br>
+Thanks, @ BUKATAN TEAM!<br>
 {{ config('app.name') }}
 @endcomponent

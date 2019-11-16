@@ -23,11 +23,9 @@ Route::get('/category_wise/{category_id}', 'HomeController@show_category_product
 Route::get('/manufacture_wise/{manufacture_id}', 'HomeController@show_manufacture_product_wise');
 //view products routes
 Route::get('/view-product/{product_id}', 'HomeController@view_product_by_id');
-
-
-
-
-
+Route::post('save_users_upload', 'HomeController@store_users_products');
+//Customer sell your product route
+Route::get('/Reg/p/r/r', 'HomeController@Register_and_sell_product');
 
 
 
@@ -37,6 +35,11 @@ Route::get('/admin', 'AdminController@index');
 //admin dashboard side........................
 Route::get('/dashboard', 'AdminController@show_dashboard');
 Route::post('/admin-dashboard', 'AdminController@dashboard');
+//unactive_user suspend
+Route::get('/unactive_user/{customer_id}','AdminController@unactive_user');
+//unactive_user suspend
+Route::get('/active_user/{customer_id}','AdminController@active_user');
+
 
 //catetory related 
 Route::get('/add_category','CategoryController@index');
@@ -137,10 +140,11 @@ Route::get('/forget-password', 'CheckoutController@forget_password');
 Route::post('/send_mail', 'CheckoutController@send_email_reset');
 //reset password page
 Route::get('/reset-password/{email}', 'CheckoutController@show_reset_password_form')->name('reset-password-form');
-
 //reset password page
 Route::post('/reset-password', 'CheckoutController@reset_password')->name('reset-password');
 
+
+//email verification starts here
 Route::get('/email-verify', 'CheckoutController@email_verify')->name('email-verify'); // show page
 Route::get('/email-verify-resend', 'CheckoutController@email_verify_resend')->name('email-verify-resend'); // resend verification
 Route::get('/email-verification/{email}', 'CheckoutController@email_verification')->name('email-verification'); // verification
@@ -192,7 +196,11 @@ Route::get('/Blogging', 'BlogController@blog');
 Route::get('/add_category', 'BlogController@add_blog_category');
 //Storing blog_Category
 Route::post('/_category', 'BlogController@store_blog_category');
+//getting post by category route
+Route::get('/get_post_by_category/{blog_category_id}','BlogController@show_post_by_category');
 //Store Blog post
+//Continue reading post....
+Route::get('/read=post/{post_id}', 'BlogController@continue_reading_post');
 Route::post('/_post', 'BlogController@store_blog_post');
 //edit post
 Route::get('/edit-post/{post_id}', 'BlogController@edit_blog');
@@ -205,6 +213,8 @@ Route::get('/delete-post/{post_id}', 'BlogController@delete_blog');
 
 // Laravel 5.1.17 and above
 Route::get('/payment/callback', 'CheckoutController@handleGatewayCallback');
+
+
 
 
 

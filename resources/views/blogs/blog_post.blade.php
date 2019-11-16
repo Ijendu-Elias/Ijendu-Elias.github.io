@@ -7,9 +7,9 @@
       <?php $blog_category_id=Session::get('blog_category_id'); ?>
 
       <?php if($customer_id!= NULL){?>
-      <a class="btn btn-sm  btn-warning"href="{{URL::to('/Blogging')}}" style="float:right; border-radius:20px; color:red; font-weight:bolder">READ POST</a>
-        <a class="btn btn-sm btn-info"href="{{('/add_category')}}" style="float:right; color:red; border-radius:20px; font-weight:bolder">ADD CATEGORY</a>
-        <a class="btn btn-sm  btn-success" href="#" style="float:left; color:red; border-radius:20px; font-weight:bolder">CREATE POST</a>
+      <a class="btn btn-sm  btn-warning"href="{{URL::to('/Blogging')}}" style="float:right; border-radius:3px; color:red; font-weight:bolder">READ POST</a>
+        <a class="btn btn-sm btn-info"href="{{('/add_category')}}" style="float:right; color:red; border-radius:3px; font-weight:bolder">ADD CATEGORY</a>
+        <a class="btn btn-sm  btn-success" href="#" style="float:left; color:red; border-radius:3px; font-weight:bolder">CREATE POST</a>
       <?php } ?>
 
       </div>
@@ -28,7 +28,7 @@
                       On: &nbsp; {{$post->slug}}<br>
 
                       Title: &nbsp; <code>{{$post->title}}</code><br>
-                      <span style="color:skyblue">Post:</span> &nbsp; <div align="justify">{{$post->post_body}} </div><br>
+                      <span style="color:skyblue">Post:</span> &nbsp; <div align="justify">{{str_limit($post->post_body, 300)}}<a href="{{URL::to('/read=post/'.$post->blog_category_id)}}">Read More&nbsp;<i class="fa fa-arrow-right"></i></a> </div><br>
                       <span style="color:skyblue">By:</span> &nbsp; <code>{{$post->author}}</code><br>
                         <span style="color:skyblue">Date:</span> &nbsp;  &nbsp; <code>{{$post->blog_date}}</code>
                       <img src="{{$post->post_image}}" class="img-circle" style="width:50px; height:50px;"><br>
@@ -52,7 +52,6 @@
                             Session::put('category', null);
                         ?>
                     </p><!--end of flash message-->
-          <h4 class="blog-post-title"><i>Article</h4>  
             </div>
 
 
@@ -118,7 +117,7 @@
                                 ->select('_tbl_blog_category.*')
                                 ->get();															
                               foreach($all_post_category as $category){?>
-                            <li><a href="#">{{$category->slug}}</a></li>
+                            <li><a href="{{URL::to('/get_post_by_category/'.$category->blog_category_id)}}">{{$category->slug}}</a></li>
               <?php }?>
           </ol>
         </div>

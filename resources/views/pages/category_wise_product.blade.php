@@ -1,6 +1,6 @@
 @extends('layout')
 @section('content')
-        <h2 class="title text-center">Products Search Result</h2>
+        <h2 class="title text-center">Products Available</h2>
        
        <?php foreach ($product_by_category as $view_category_wise){?>
 

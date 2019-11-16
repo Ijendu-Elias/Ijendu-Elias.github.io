@@ -46,6 +46,31 @@ class AdminController extends Controller
                     //  exit();
         }
 
+        //suspending a user from logging in
+        public function unactive_user($customer_id)
+        {
+        // $this->AdminAuthCheck();
+        DB::table('tbl_customers_registered')
+                ->where('customer_id',$customer_id)
+                ->update(['suspension' => 0 ]);
+                Session::put('message', 'Users has been suspended from logging in');
+                return Redirect::to('/dashboard');
+
+
+    }
+
+    //return access to a suspended user from logging in
+    public function active_user($customer_id)
+    {
+    DB::table('tbl_customers_registered')
+            ->where('customer_id',$customer_id)
+            ->update(['suspension' => 1 ]);
+            Session::put('message', 'Users Access Restored');
+            return Redirect::to('/dashboard');
+
+
+}
+
         //checking if Admin is login. Authentication
         public function AdminAuthCheck()
         {

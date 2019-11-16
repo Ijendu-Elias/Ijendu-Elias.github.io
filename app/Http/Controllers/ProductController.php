@@ -50,7 +50,7 @@ class ProductController extends Controller
             return Redirect::to('/all_product');
            }
         }
-
+        
         //adding product without an image
         $data['product_image']=$image_url;
             DB::table('tbl_products')
