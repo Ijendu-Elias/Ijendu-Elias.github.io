@@ -18,7 +18,7 @@
                         {{ csrf_field() }}
                         <input type="email" placeholder="Email" name="customer_email"  required/>
                         <input type="password" placeholder="password" name="password" required/>
-                        <button type="submit" class="btn btn-default">Login</button>
+                        <button type="submit" class="btn btn-default" style="width:100%;">Login</button>
                         <span>
                         <input type="checkbox" class="checkbox" value="your agree to our terms and condition" required/><a href="#">Terms and conditions Apply</a> <br>
                         <a href="{{URL::to('/forget-password')}}"  style="color:red"><i class="fa fa-arrow-right" style="color:skyblue"></i>&nbsp; &nbsp; &nbsp;  Forget Password?</a>
@@ -58,11 +58,57 @@
                                 <input type="checkbox" name="suspension" checked value="1" style="cursor:pointer">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-default">Signup</button>
+                        <button type="submit" class="btn btn-default" style="width:150%; ">Submit</button>
                     </form>
                 </div><!--/sign up form-->
             </div>
         </div>
     </div>
+<br><br><br>
+
+
+     <div class="carousel-inner" >
+            
+            <marquee behavior="scroll" direction=""><h5>Checkout On Our Amazing Offer</h5></marquee><hr>
+            <?php
+                $all_published_category=DB::table('tbl_products')
+                    ->join('tbl_category','tbl_products.category_id','=','tbl_category.category_id')
+                    ->join('manufacture','tbl_products.manufacture_id','=','manufacture.manufacture_id')
+                    ->select('tbl_products.*','tbl_category.category_name','manufacture.manufacture_name')
+                    ->where('tbl_products.publication_status', 1)
+                    ->get();
+                    foreach($all_published_category as $log){?>
+
+                        <div class="col-sm-3">
+                       <div class="product-image-wrapper">
+                           <div class="single-products">
+                            <div class="productinfo text-center">
+                                <img class="img-thumbnail" src="{{URL::to($log->product_image)}}" alt="" style="height:200px; border:2px solid gray; width:30%; height:30%;" />
+                                <h2  style="color:black;">N{{$log->product_price}}</h2>
+                                <p>{{$log->product_name}}</p>
+                                <a href="{{URL::to('/view-product/'.$log->product_id)}}" class="btn btn-default add-to-cart" style="cursor:progress" ><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                            </div>
+                            <div class="product-overlay"  style="background:skyblue;">
+                                <div class="overlay-content" style="background:skyblue;">
+                                    <h2>N{{$log->product_price}}</h2>
+                                    <p>{{$log->product_name}}</p>
+                                    <a style="background:skyblue" href="{{URL::to('/view-product/'.$log->product_id)}}" class="btn btn-default add-to-cart" style="cursor:progress"><i class="fa fa-shopping-cart"  style="color:white" ></i><span style="color:white">Add to cart</a>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="choose">
+                        <ul class="nav nav-pills nav-justified">
+                            <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+                            <li><a href="{{URL::to('/view-product/'.$log->product_id)}}"><i class="fa fa-plus-square"></i>View products</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+<?php }?>
+            
+           
+                   
+            
+                </div><!--features_items-->
 </section><!--/form-->
 @endsection

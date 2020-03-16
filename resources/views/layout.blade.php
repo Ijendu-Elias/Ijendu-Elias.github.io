@@ -23,6 +23,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{URL::to('frontend/images/ico/apple-touch-icon-72-precomposed.png')}}">
 	<link rel="apple-touch-icon-precomposed" href="{{URL::to('frontend/images/ico/apple-touch-icon-57-precomposed.png')}}">
 	<script src="{{asset('frontend/js/jquery.js')}}"></script>
+	<script src="{{asset('frontend/js/jquery.cropit.js')}}"></script><!--cropper.js-->
 </head><!--/head-->
 
 <style type="text/css">
@@ -96,12 +97,92 @@
 }
 </style>
 
+
+<!--Crop-it js files for backgroup and rotation-->
+<style>
+      .cropit-preview {
+        background-color: #f8f8f8;
+        background-size: cover;
+        border: 5px solid #ccc;
+        border-radius: 3px;
+        margin-top: 7px;
+        width: 250px;
+        height: 250px;
+      }
+
+      .cropit-preview-image-container {
+        cursor: move;
+      }
+
+      .cropit-preview-background {
+        opacity: .2;
+        cursor: auto;
+      }
+
+      .image-size-label {
+        margin-top: 10px;
+      }
+
+      input, .export {
+        /* Use relative position to prevent from being covered by image background */
+        position: relative;
+        z-index: 10;
+        display: block;
+      }
+
+      button {
+        margin-top: 10px;
+      }
+	</style>
+	
+	<!--Crop-it js files for form and rotation-->
+<style>
+      .cropit-preview {
+        background-color: #f8f8f8;
+        background-size: cover;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin-top: 7px;
+        width: 250px;
+        height: 250px;
+      }
+
+      .cropit-preview-image-container {
+        cursor: move;
+      }
+
+      .image-size-label {
+        margin-top: 10px;
+      }
+
+      input {
+        display: block;
+      }
+
+      button[type="submit"] {
+        margin-top: 10px;
+      }
+
+      #result {
+        margin-top: 10px;
+        width: 900px;
+      }
+
+      #result-data {
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+      }
+    </style>
+
+
 <body>
 	<header id="header"><!--header-->
 		<marquee behavior="scroll" direction=""><p class="alert-info" style="border-radius:8px;">
 				<?php
-				   $message=Session::get('message');
-				
+				   $message=Session::get('message');				
 				   if($message)
 					echo $message;
 					Session::put('message', null);
@@ -139,7 +220,7 @@
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="{{URL::to('/')}}"><img src="{{URL::to('frontend/images/home/logo.png')}}" alt="" /></a>
+							<a href="{{URL::to('/')}}"><img src="{{URL::to('frontend/images/home/552.gif')}}" alt="" /></a>
 						</div>
 						<div class="btn-group pull-right">
 							<div class="btn-group">
@@ -148,11 +229,8 @@
 									<span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
-									<li><a href="{{URL::to('/')}}">Canada</a></li>
 									<li><a href="{{URL::to('/')}}">America</a></li>
 									<li><a href="{{URL::to('/')}}">Nigeria</a></li>
-									<li><a href="{{URL::to('/')}}">Quate</a></li>
-									<li><a href="{{URL::to('/')}}">Ghana</a></li>
 								</ul>
 							</div>
 
@@ -165,11 +243,8 @@
 										<?php $customer_id=Session::get('customer_id'); ?>	
 
 										<?php if($customer_id!= NULL){?>
-											<li><a href="{{URL::to('/payment')}}">Canadian Dollar</a></li>
-											<li><a href ="{{URL::to('/payment')}}">USA Dollar</a></li>
-											<li><a href="{{URL::to('/payment')}}">Pound</a></li>
+											<li><a href ="{{URL::to('/payment')}}">Dollar</a></li>
 											<li><a href="{{URL::to('/payment')}}">Naira</a></li>
-											<li><a href="{{URL::to('/payment')}}">Quate</a></li>
 										<?php }?>	
 									
 								</ul>
@@ -308,16 +383,22 @@
 										?>
 											<div class="item <?php echo $count == 0 ? "active" : "" ; $count++;?>">
 												<div class="row">
-													<div class="col-sm-6"><hr>
-												<h1 class="hs3"> BUKATAN <br clear="all"><marquee behavior="Alternate" direction=""><span style="color:green">_</span><span style="color:orange"></span><span style="color:red">_</span><span style="color:green"></span><span style="color:orange">_</span><span style="color:red"></span><span style="color:green">_</span><span style="color:orange"></span><span style="color:red">_</span><span style="color:green"></span><span style="color:orange">_</span></span></marquee><hr ><span style="color:red; font-weight:bolder;" class="hs4"> GLOBAL</span><span style="color:green; font-weight:bolder" class="hs5">SERVICE</h3><hr>
-													<h1 style="color:white;;border-radius:0px; text-align:center; font-weight:bolder"> <span style="font-size:20px; color:white;" class="hs1"><marquee behavior="slide" direction="">Receive Your Order Less Than 7 Days</marquee>  </span></h1><hr>
-														<h2 style="color:orange; font-weight:bolder" class="hs2"><marquee behavior="slide" direction="right">Free Online Store</marquee> </h2> <hr>
-														<button type="button" class="btn btn-default get" style="background:gray;">Get it now</button>
+													<div class="col-sm-12"><hr>
+												<h1 class="hs3"> BUKATAN <br clear="all"><hr ><span style="color:red; font-weight:bolder;" class="hs4"> GLOBAL</span><span style="color:green; font-weight:bolder" class="hs5">SERVICE</h3><hr>
+												<div class="col-sm-6">
+														<img src="{{URL::to($v_slider->slider_image)}}" class="girl img-responsive" alt="" style="width:200%" />
+														<h2 style="color:orange; font-weight:bolder" class="hs2">Free Online Store</h2> <hr>
+
+<!-- 														<img src="{{asset('frontend/images/home/.png')}}"  class="pricing" alt="" />
+ -->													</div>
+												
+												<!--  -->
+														<!-- <button type="button" class="btn btn-default get" style="background:gray;">Get it now</button> -->
 													</div>
-													<div class="col-sm-6">
-														<img src="{{URL::to($v_slider->slider_image)}}" class="girl img-responsive" alt="" />
-														<img src="{{asset('frontend/images/home/.png')}}"  class="pricing" alt="" />
-													</div>
+													<img class="img-circle" class="img-circle" src="{{URL::to('frontend/images/home/logo6.png')}}" alt="" style="width:auto;  margin-top:220px"/>
+												<img class="img-circle" src="{{URL::to('frontend/images/home/logo2.png')}}" alt="" style="width:auto;  margin-top:180px" />
+												<img class="img-circle" src="{{URL::to('frontend/images/home/logo5.png')}}" alt="" style="width:auto; margin-top:220px" />
+												<img class="img-thumbnail" src="{{URL::to('frontend/images/home/logo7.png')}}" alt="" style="width:auto; height:450px;" />
 												</div>
 											</div>
 										<?php } ?>
@@ -327,7 +408,9 @@
 						</a>
 						<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next" >
 							<i class="fa fa-angle-right"></i>
-						</a>
+						</a><hr>
+<!-- 						<marquee behavior="Alternate" direction=""><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span><span style="color:red">_</span><span style="color:green">_</span><span style="color:orange">_</span></marquee>
+ -->
 					</div>
 				</div>
 			</div>
@@ -389,9 +472,14 @@
 							<a href="#"><img src="{{asset('frontend/images/home/shipping.jpg')}}" alt="" /></a>
 						</div><!--/shipping-->
 						<div class="shipping text-center"><!--sell your product image icon-->
-						<a href="{{URL::to('/Reg/p/r/r')}}"><img src="{{asset('sell_your_product_img.jpg')}}" alt="" style="width:100%;" /></a>
+						<a href="{{URL::to('/Reg/p/r/r')}}" class="buy-pro"><img src="{{asset('sell_your_product_img.jpg')}}" alt="" style="width:100%;" /></a>
 						</div><!--end of sell your product image icon-->
 					</div>
+					<div style="float:left">
+							<h5>Find Us</h5>
+						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31715.49893245223!2d7.559387489182547!3d6.4661464434442255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1044a5b059e6555b%3A0x19f5ac25986409a5!2sEmene%2C%20Enugu!5e0!3m2!1sen!2sng!4v1576533363742!5m2!1sen!2sng" width="250" height="520" frameborder="3" style="border:3;" allowfullscreen="" ></iframe>
+
+						</div>
 				</div>
 				
 				<div class="col-sm-9 padding-right">
@@ -476,12 +564,12 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-sm-3">
+					<!-- <div class="col-sm-3">
 						<div class="address">
 							<img src="{{asset('frontend/images/home/map.png')}}" alt="" />
 							<p>No 3, Ogbe Ofu Street, Asaba. Delta State. Nigeria</p>
 						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 		</div>
@@ -490,16 +578,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-2">
-						<div class="single-widget">
-							<h2 class="hs1">Service</h2>
-							<ul class="nav nav-pills nav-stacked">
-								<li class="hs2"><a href="#">Online Help</a></li>
-								<li class="hs2"><a href="#">Contact Us</a></li>
-								<li class="hs2"><a href="#">Order Status</a></li>
-								<li class="hs2"><a href="#">Change Location</a></li>
-								<li class="hs2"><a href="#">FAQ’s</a></li>
-							</ul>
-						</div>
+						
 					</div>
 					<div class="col-sm-2">
 						<div class="single-widget">
@@ -539,26 +618,27 @@
 								<li><a href="#">Data Policy</a></li>
 							</ul>
 						</div>
+						
 					</div>
-					<div class="col-sm-3 col-sm-offset-1">
-						<div class="single-widget">
+					<div class="col-sm-10 col-sm-offset-1">
+						<!-- <div class="single-widget">
 							<h2 class="hs1">About Our Market System</h2>
 							<form action="#" class="searchform">
 								<input type="text" placeholder="Your email address" />
 								<button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
 								<p class="hs2">Get the most recent updates from <br />our site and be updated your self...</p>
 							</form>
-						</div>
+						</div> -->
 					</div>
 					
 				</div>
 			</div>
 		</div>
 		
-		<div class="footer-bottom">
+		
 			<div class="container">
 				<div class="row">
-					<p class="pull-left; hs2">Copyright © 2019 1Network-1iP Inc. All rights reserved.</p>
+					<p class="pull-left; hs2">Copyright © 2019 1Network-1iP Inc. All rights reserved.Designed by <span><a target="_blank" href="www.wideus.blogspot.com">Ijendu Elias</a></span></p>
 					<p class="pull-right hs1">Designed by <span><a target="_blank" href="www.wideus.blogspot.com">Ijendu Elias</a></span></p>
 				</div>
 			</div>
@@ -626,6 +706,17 @@ $(function() {
 			};
 		});
 	
+		
+		$('.buy-pro').on("click",function(e){
+		e.preventDefault();
+		var link = $(this).attr("href");
+		var reg = confirm("Please Log In Or SignUp To Be Able to View This Page...If You Have Click Ok To Continue ");
+		if(reg){
+			window.location.href = link;
+		};
+	});
+
+
 //javacript to ask you are you sure you wanna log in?
 $('.customer').on("click",function(e){
 		e.preventDefault();
@@ -686,6 +777,8 @@ $('.customer').on("click",function(e){
 			$("#ecom").css("color", "skyblue").fadeIn("slow");
 		}, 4000)
 	});
+
+	
 
  
 

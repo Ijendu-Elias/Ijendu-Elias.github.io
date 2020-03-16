@@ -25,7 +25,13 @@ Route::get('/manufacture_wise/{manufacture_id}', 'HomeController@show_manufactur
 Route::get('/view-product/{product_id}', 'HomeController@view_product_by_id');
 Route::post('save_users_upload', 'HomeController@store_users_products');
 //Customer sell your product route
-Route::get('/Reg/p/r/r', 'HomeController@Register_and_sell_product');
+Route::get('/Reg/p/r/r', 'HomeController@Register_and_sell_product');//customer registration page to sell products
+Route::post('/customer_send_sales', 'HomeController@proccess_customer_form');
+Route::get('/regSec', 'HomeController@reg_customer_formTwo');
+Route::post('/reg2', 'HomeController@reg_customer_push');
+//Multiple image upload routes
+Route::get('/sec_image_upload', 'HomeController@multiple_img_upload');
+Route::post('/submit', 'HomeController@multiple_Z');
 
 
 
@@ -193,7 +199,7 @@ Route::post('/reply','BlogController@reply_back');
 //Blog Post
 Route::get('/Blogging', 'BlogController@blog');
 //Adding Blog Category
-Route::get('/add_category', 'BlogController@add_blog_category');
+Route::get('/add-category', 'BlogController@add_blog_category');
 //Storing blog_Category
 Route::post('/_category', 'BlogController@store_blog_category');
 //getting post by category route

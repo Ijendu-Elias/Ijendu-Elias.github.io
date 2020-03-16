@@ -8,7 +8,7 @@
 
       <?php if($customer_id!= NULL){?>
       <a class="btn btn-sm  btn-warning"href="{{URL::to('/Blogging')}}" style="float:right; border-radius:3px; color:red; font-weight:bolder">READ POST</a>
-        <a class="btn btn-sm btn-info"href="{{('/add_category')}}" style="float:right; color:red; border-radius:3px; font-weight:bolder">ADD CATEGORY</a>
+        <a class="btn btn-sm btn-info"href="{{('/add-category')}}" style="float:right; color:red; border-radius:3px; font-weight:bolder">ADD CATEGORY</a>
         <a class="btn btn-sm  btn-success" href="#" style="float:left; color:red; border-radius:3px; font-weight:bolder">CREATE POST</a>
       <?php } ?>
 

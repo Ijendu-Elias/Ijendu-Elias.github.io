@@ -25,6 +25,7 @@ class CartingController extends Controller
         return Redirect::to('/display_product_page');
         //  return view('pages.add_to_cart');
     }
+    
 
     public function display_product_page()
     {

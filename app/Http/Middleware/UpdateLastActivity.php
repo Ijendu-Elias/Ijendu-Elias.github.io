@@ -15,6 +15,7 @@ class UpdateLastActivity
      * @param  \Closure  $next
      * @return mixed
      */
+    //code to update customer last current login activities
     public function handle($request, Closure $next)
     {
         if(Session::get('customer_email')){

@@ -32,102 +32,43 @@
 <?php }?>
             </div><!--features_items-->
 
-            <!--recommended_items-->
-            <div class="recommended_items">
-            <h2 class="title text-center">Other Related Products</h2>
+            <div class="carousel-inner">
+            <h5>Related Products Availables</h5>
+            <?php
+                $all_published_category=DB::table('tbl_products')
+                    ->join('tbl_category','tbl_products.category_id','=','tbl_category.category_id')
+                    ->join('manufacture','tbl_products.manufacture_id','=','manufacture.manufacture_id')
+                    ->select('tbl_products.*','tbl_category.category_name','manufacture.manufacture_name')
+                    ->where('tbl_products.publication_status', 1)
+                    ->get();
+                    foreach($all_published_category as $log){?>
 
-            <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="item active">	
                         <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="{{asset('frontend/images/home/recommend1.jpg')}}" alt="" />
-                                        <h2>N2,000</h2>
-                                        <p>Easy Polo Black Edition17</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-                                    
+                       <div class="product-image-wrapper">
+                           <div class="single-products">
+                            <div class="productinfo text-center">
+                                <img class="img-thumbnail" src="{{URL::to($log->product_image)}}" alt="" style="height:200px; border:2px solid gray;" />
+                                <h2  style="color:black;">N{{$log->product_price}}</h2>
+                                <p>{{$log->product_name}}</p>
+                                <a href="{{URL::to('/view-product/'.$log->product_id)}}" class="btn btn-default add-to-cart" style="cursor:progress" ><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                            </div>
+                            <div class="product-overlay"  style="background:skyblue;">
+                                <div class="overlay-content" style="background:skyblue;">
+                                    <h2>N{{$log->product_price}}</h2>
+                                    <p>{{$log->product_name}}</p>
+                                    <a style="background:skyblue" href="{{URL::to('/view-product/'.$log->product_id)}}" class="btn btn-default add-to-cart" style="cursor:progress"><i class="fa fa-shopping-cart"  style="color:white" ></i><span style="color:white">Add to cart</a>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="{{asset('frontend/images/home/recommend2.jpg')}}" alt="" />
-                                        <h2>N2,000</h2>
-                                        <p>Easy Polo Black Edition18</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="{{asset('frontend/images/home/recommend3.jpg')}}" alt="" />
-                                        <h2>N2,000</h2>
-                                        <p>Easy Polo Black Edition19</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <div class="item">	
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="{{asset('frontend/images/home/recommend1.jpg')}}" alt="" />
-                                        <h2>N2,000</h2>
-                                        <p>Easy Polo Black Edition20</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="{{asset('frontend/images/home/recommend2.jpg')}}" alt="" />
-                                        <h2>N2,000</h2>
-                                        <p>Easy Polo Black Edition21</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="product-image-wrapper">
-                                <div class="single-products">
-                                    <div class="productinfo text-center">
-                                        <img src="{{asset('frontend/images/home/recommend3.jpg')}}" alt="" />
-                                        <h2>N2,000</h2>
-                                        <p>Easy Polo Black Edition22</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </div>
+                    <div class="choose">
+                        <ul class="nav nav-pills nav-justified">
+                            <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+                            <li><a href="{{URL::to('/view-product/'.$log->product_id)}}"><i class="fa fa-plus-square"></i>View products</a></li>
+                        </ul>
                     </div>
                 </div>
-                <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
-                    <i class="fa fa-angle-left"></i>
-                </a>
-                <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
-                    <i class="fa fa-angle-right"></i>
-                </a>			
             </div>
-            </div><!--/recommended_items-->
+<?php }?>
+         </div><!--features_items-->
 
       @endsection

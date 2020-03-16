@@ -28,7 +28,7 @@ class ProductController extends Controller
        $data['category_id']=$request->category_id;
        $data['manufacture_id']=$request->manufacture_id;
        $data['product_short_description']=$request->product_short_description;
-       $data['product_long_description']=$request->product_short_description;
+       $data['product_long_description']=$request->product_long_description;
        $data['product_price']=$request->product_price;
        $data['product_size']=$request->product_size;
        $data['product_color']=$request->product_color;
@@ -49,17 +49,16 @@ class ProductController extends Controller
             Session::put('message','product added successfully');
             return Redirect::to('/all_product');
            }
-        }
-        
+        }        
         //adding product without an image
         $data['product_image']=$image_url;
             DB::table('tbl_products')
                     ->insert($data);
             Session::put('message','product added successfully without image');
             return Redirect::to('/all_product');
-
-
     }
+
+
 
     public function show_product()
     {
@@ -67,10 +66,10 @@ class ProductController extends Controller
         $this->AdminAuthCheck();
         //$allproduct_info=DB::table('tbl_category')->get();
         $allproduct_info=DB::table('tbl_products')
-                                    ->join('tbl_category','tbl_products.category_id','=','tbl_category.category_id')
-                                    ->join('manufacture','tbl_products.manufacture_id','=','manufacture.manufacture_id')
-                                    ->select('tbl_products.*','tbl_category.category_name','manufacture.manufacture_name')
-                                    ->paginate(10);
+                            ->join('tbl_category','tbl_products.category_id','=','tbl_category.category_id')
+                            ->join('manufacture','tbl_products.manufacture_id','=','manufacture.manufacture_id')
+                            ->select('tbl_products.*','tbl_category.category_name','manufacture.manufacture_name')
+                            ->paginate(10);
 
                         $manage_product=view('admin.all-product')->with('allproduct_info',$allproduct_info);
                         return view('admin_layout')->with('admin.all-product', $manage_product);

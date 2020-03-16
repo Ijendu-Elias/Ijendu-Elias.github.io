@@ -2,6 +2,14 @@
 @section('content')
 <div class="container"><!-- Customer container-->
     <div class="row">
+    <div class="alert-danger" style="border-radius:3px;">
+                <?php
+                $message=Session::get('message');
+                if($message)
+                 echo $message;
+                 Session::put('message', null);
+             ?>
+            </div><!--end of flash message-->
         <h2 style="margin-left:16%; color:red"><span class="fa fa-arrow-down">Customer Account Information</span></h2>
     </div>
     <div class="container-fluid col-md-8 col-md-offset-0" style="height:300px; box-shadow: 1px 1px 1px 1px gray; border-bottom:1px solid gray; overflow-x:scroll;">
