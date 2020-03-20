@@ -26,6 +26,17 @@ class CheckoutController extends Controller
         return view('pages.login_check');
     }
 
+    public function checkGoogleCaptcha($rkey)
+    {
+        $secretKey = '6Ldb9-EUAAAAAL0YZmGTREA-rUEkeYNOcHZOXCKn';
+        $responseKey = $rkey;
+        $urlIP = $_SERVER['REMOTE_ADDR'];
+        $url = "https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$responseKey$remoteip=$urlIP";
+        $response = file_get_contents($url);
+        $response = json_decode($response);
+        return $response;
+    }
+
 
     public function register(Request $request)
     {
@@ -123,29 +134,40 @@ class CheckoutController extends Controller
         //    $custommer_id=$request->customer_id;
             $customer_email = $request->customer_email;
             $customer_password = $request->password;
+            $google_capcha = $_POST['g-recaptcha-response'];
+            
             $user=DB::table('tbl_customers_registered')
                             ->where('customer_email', $customer_email)
                             ->first();
+                            
+                            if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])){
 
-                            if($user){
-                                if($user->suspension == 1){
-                                   $password_valid = password_verify($customer_password, $user->password);
-                                  if($password_valid){
-                                      Session::put('customer_id', $user->customer_id);
-                                      Session::put('customer_email', $user->customer_email);
-                                      Session::put('phone_number', $user->phone_number);
-                                      Session::put('customer_name', $user->customer_name);
-                                        return redirect('/')->withMessage('Login Successful');                                  
-                                  }else{
-                                      return redirect()->back()->withMessage('creditial incorrect');
-                               }}else{
-                                       return redirect()->back()->withMessage('Sorry you are on suspention incorrect');
-                                }
+                                if($user){
+                                    if($user->suspension == 1){
+                                       $password_valid = password_verify($customer_password, $user->password);
+                                      if($password_valid){
+                                          Session::put('customer_id', $user->customer_id);
+                                          Session::put('customer_email', $user->customer_email);
+                                          Session::put('phone_number', $user->phone_number);
+                                          Session::put('customer_name', $user->customer_name);
+                                            return redirect('/')->withMessage('Login Successful');                                  
+                                      }else{
+                                          return redirect()->back()->withMessage('creditial incorrect');
+                                   }}else{
+                                           return redirect()->back()->withMessage('Sorry you are on suspention incorrect');
+                                    }
+                                }else{
+                                    return redirect()->back()->withMessage('user not registered');
+    
+                                     }
+
                             }else{
-                                return redirect()->back()->withMessage('user not registered');
+                                return redirect()->back()->withMessage('Please Check The Capcha');
+                            }
 
-                                 }
+                            
     }
+
                  
 
     //for profile as user side
@@ -456,6 +478,7 @@ class CheckoutController extends Controller
                     return Redirect::to('/');
         
     }
+    
 
 
     // customer login validation and pages view control

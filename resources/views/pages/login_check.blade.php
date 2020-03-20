@@ -17,13 +17,19 @@
                     <form action="{{URL::to('/customer_login')}}" method="POST">
                         {{ csrf_field() }}
                         <input type="email" placeholder="Email" name="customer_email"  required/>
-                        <input type="password" placeholder="password" name="password" required/>
+                        <div class="form-group">
+                            <input type="password" placeholder="password" name="password" required/>
+                            <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        </div>
+                        <div class="g-recaptcha" data-sitekey="6Ldb9-EUAAAAANA81V9rMZV6xMCyrErip_a9FTCb"></div>
+
                         <button type="submit" class="btn btn-default" style="width:100%;">Login</button>
                         <span>
                         <input type="checkbox" class="checkbox" value="your agree to our terms and condition" required/><a href="#">Terms and conditions Apply</a> <br>
                         <a href="{{URL::to('/forget-password')}}"  style="color:red"><i class="fa fa-arrow-right" style="color:skyblue"></i>&nbsp; &nbsp; &nbsp;  Forget Password?</a>
                         </span>
-                               
+                              <div>
+                              </div> 
                     </form>
                 </div><!--/login form-->
             </div>

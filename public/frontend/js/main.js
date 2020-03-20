@@ -28,3 +28,21 @@ $(document).ready(function(){
 		});
 	});
 });
+
+//hidding password
+var togglePassword = function () {
+
+	$(".toggle-password").click(function() {
+
+		$(this).toggleClass("fa-eye fa-eye-slash");
+		var input = $(this).closest('.form-group').find('input');
+		if(input.attr("type") == "password") {
+			input.attr("type", "text");
+		} else { 
+			input.attr("type", "password");
+		}
+
+	});
+
+}
+togglePassword();

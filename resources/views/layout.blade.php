@@ -6,6 +6,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Home | Bukatan</title>
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script><!--ggogle catcha api-->
+
     <link href="{{asset('frontend/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('frontend/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('frontend/css/prettyPhoto.css')}}" rel="stylesheet">
@@ -179,6 +181,10 @@
 
 
 <body>
+<!-- Preloader -->
+<div id="preloader">
+    <div class="dorne-load"></div>
+</div>
 	<header id="header"><!--header-->
 		<marquee behavior="scroll" direction=""><p class="alert-info" style="border-radius:8px;">
 				<?php
@@ -186,6 +192,7 @@
 				   if($message)
 					echo $message;
 					Session::put('message', null);
+					
 				?>
 		</p></marquee>
 		<div class="header_top"><!--header_top-->
@@ -378,10 +385,10 @@
 										$all_published_slide=DB::table('tbl_slider')
 																->where('publication_status', 1)
 																->get();
-										$count = 0;																
-										foreach($all_published_slide as $v_slider){
-										?>
-											<div class="item <?php echo $count == 0 ? "active" : "" ; $count++;?>">
+											$count = 0;																
+											foreach($all_published_slide as $v_slider){
+											?>
+											<div class="item <?php echo $count == 1 ? "active" : "" ; $count++;?>">
 												<div class="row">
 													<div class="col-sm-12"><hr>
 												<h1 class="hs3"> BUKATAN <br clear="all"><hr ><span style="color:red; font-weight:bolder;" class="hs4"> GLOBAL</span><span style="color:green; font-weight:bolder" class="hs5">SERVICE</h3><hr>
@@ -398,7 +405,7 @@
 													<img class="img-circle" class="img-circle" src="{{URL::to('frontend/images/home/logo6.png')}}" alt="" style="width:auto;  margin-top:220px"/>
 												<img class="img-circle" src="{{URL::to('frontend/images/home/logo2.png')}}" alt="" style="width:auto;  margin-top:180px" />
 												<img class="img-circle" src="{{URL::to('frontend/images/home/logo5.png')}}" alt="" style="width:auto; margin-top:220px" />
-												<img class="img-thumbnail" src="{{URL::to('frontend/images/home/logo7.png')}}" alt="" style="width:auto; height:450px;" />
+												<img class="img-circle" src="{{URL::to('frontend/images/home/logo7.png')}}" alt="" style="width:auto; height:450px;" />
 												</div>
 											</div>
 										<?php } ?>
@@ -476,31 +483,34 @@
 						</div><!--end of sell your product image icon-->
 					</div>
 					<div style="float:left">
-							<h5>Find Us</h5>
-						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31715.49893245223!2d7.559387489182547!3d6.4661464434442255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1044a5b059e6555b%3A0x19f5ac25986409a5!2sEmene%2C%20Enugu!5e0!3m2!1sen!2sng!4v1576533363742!5m2!1sen!2sng" width="250" height="520" frameborder="3" style="border:3;" allowfullscreen="" ></iframe>
+							<!-- <h5>Find Us</h5> -->
+						<!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31715.49893245223!2d7.559387489182547!3d6.4661464434442255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1044a5b059e6555b%3A0x19f5ac25986409a5!2sEmene%2C%20Enugu!5e0!3m2!1sen!2sng!4v1576533363742!5m2!1sen!2sng" width="250" height="520" frameborder="3" style="border:3;" allowfullscreen="" ></iframe> -->
 
-						</div>
+					</div> -->
 				</div>
 				
 				<div class="col-sm-9 padding-right">
-					<div class="features_items"><!--features_items-->
+					<div class="features_items">
 					
 	@yield('content')
 				    </div>
 					</div>
 					</div>
-							</section>
+</section>
 				
-				<footer id="footer"><!--Footer-->
+	<!--Footer-->
+				<footer id="footer">
 					<div class="footer-top">
 						<div class="container">
-							<div class="row">
+						  <div class="row">
 							<div class="col-sm-2">
-								<div class="companyinfo">
-							<h2 id="ecom" ><a href="#">ecommerce&nbsp;</span>Open shop</a></h2>
-							<p class="hs2">Do You Know You Can Be Part Of Our Team</p>
-							<p class="hs2">Do You Want Your Ads To Reach Accross the Country in 5MIN?</p>
-							<p class="hs1"><a href="#">Apply For Ads! </a></p>
+							  <div class="companyinfo">
+								<h2 id="ecom">
+								<a href="#">ecommerce&nbsp;</span>Open shop</a>
+								</h2>
+								<p class="hs2">Do You Know You Can Be Part Of Our Team</p>
+								<p class="hs2">Do You Want Your Ads To Reach Accross the Country in 5MIN?</p>
+								<p class="hs1"><a href="#">Apply For Ads! </a></p>
 						</div>
 					</div>
 					<div class="col-sm-7">
@@ -577,7 +587,7 @@
 		<div class="footer-widget">
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-2">
+					<div class="col-sm-4">
 						
 					</div>
 					<div class="col-sm-2">
@@ -605,6 +615,7 @@
 							</ul>
 						</div>
 					</div>
+					
 					<div class="col-sm-2">
 						<div class="single-widget">
 							<h2 class="hs1">About Us</h2>
@@ -619,8 +630,9 @@
 							</ul>
 						</div>
 						
+						
 					</div>
-					<div class="col-sm-10 col-sm-offset-1">
+					<!-- <div class="col-sm-10 col-sm-offset-1"> -->
 						<!-- <div class="single-widget">
 							<h2 class="hs1">About Our Market System</h2>
 							<form action="#" class="searchform">
@@ -629,7 +641,7 @@
 								<p class="hs2">Get the most recent updates from <br />our site and be updated your self...</p>
 							</form>
 						</div> -->
-					</div>
+					<!-- </div> -->
 					
 				</div>
 			</div>
@@ -644,7 +656,8 @@
 			</div>
 		</div>
 		
-	</footer><!--/Footer-->
+	</footer>
+	<!--/Footer-->
 	
 	<script src="{{asset('frontend/js/bootstrap.min.js')}}"></script>
 	<script src="{{asset('frontend/js/jquery.scrollUp.min.js')}}"></script>
@@ -655,8 +668,18 @@
 
 
 <script>
+$("document").ready(function (params) {
+	// $("window").on('load',function () {
+		$('#preloader').fadeOut('slow',function () {
+			$(this).remove()
+		})
+	// });
+	
+})
+
 	//quiz script in javascript1
 $(function() {
+	
 		 $("#button").click(function() {
 			var answer = $('#answer-box1').val();
 			//triming function

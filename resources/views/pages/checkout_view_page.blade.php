@@ -41,7 +41,7 @@
                                 <input type="address" placeholder=" Enter Your Home/Office Address*" name="shipping_address" required>
                                 <input type="phone" placeholder="Enter Your Phone Number" name="shipping_phone_number" required>
                                 <input type="Text" placeholder="Enter Your City/Country" name="shipping_city" required>
-                                <input type="submit" value="SEND" class="btn btn-sm btn-success" style="color:black; font-weight:bolder; "><span class="fa fa-arrow-right"style-="color:deepskyblue">
+                                <input type="submit" value="request Order" class="btn btn-sm btn-success" style="color:black; font-weight:bolder; "><span class="fa fa-arrow-right"style-="color:deepskyblue">
                             </form>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
             </div>
         </div>
         <div class="review-payment ">
-            <h2>Product review & Payment</h2>
+            <h2>Shipping Review</h2>
         </div>
     </div>
 </section> <!--/#cart_items-->
