@@ -66,7 +66,7 @@ class CheckoutController extends Controller
     public function email_verify(Request $request){
         return view('pages.resend_varification');
     }
-    
+
 
     public function email_verify_resend(Request $request)
     {
@@ -86,14 +86,14 @@ class CheckoutController extends Controller
         }catch(RuntimeException $ex){
             return redirect('/');
         }
-        
+
         $user = DB::table('tbl_customers_registered')
                         ->where('customer_email', $email)
                         ->update(['email_verified_at' => now()]);
         return redirect()->route('home')->withMessage('Congratulations! Your Email Has Been Verified Successfully');
     }
 
-    
+
 
     private function sendVerificationMail($user, $email)//send verification mail with compact users
     {
@@ -129,17 +129,17 @@ class CheckoutController extends Controller
 
 
     public function customer_login(Request $request)
-    {       
-        
+    {
+
         //    $custommer_id=$request->customer_id;
             $customer_email = $request->customer_email;
             $customer_password = $request->password;
             $google_capcha = $_POST['g-recaptcha-response'];
-            
+
             $user=DB::table('tbl_customers_registered')
                             ->where('customer_email', $customer_email)
                             ->first();
-                            
+
                             if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])){
 
                                 if($user){
@@ -150,7 +150,7 @@ class CheckoutController extends Controller
                                           Session::put('customer_email', $user->customer_email);
                                           Session::put('phone_number', $user->phone_number);
                                           Session::put('customer_name', $user->customer_name);
-                                            return redirect('/')->withMessage('Login Successful');                                  
+                                            return redirect('/')->withMessage('Login Successful');
                                       }else{
                                           return redirect()->back()->withMessage('creditial incorrect');
                                    }}else{
@@ -158,17 +158,17 @@ class CheckoutController extends Controller
                                     }
                                 }else{
                                     return redirect()->back()->withMessage('user not registered');
-    
+
                                      }
 
                             }else{
                                 return redirect()->back()->withMessage('Please Check The Capcha');
                             }
 
-                            
+
     }
 
-                 
+
 
     //for profile as user side
     public function profile()
@@ -202,8 +202,8 @@ class CheckoutController extends Controller
                         return redirect('/');
                     }
                     return view('pages.reset_password')
-                            ->withEmail($email); 
-                }              
+                            ->withEmail($email);
+                }
 
             public function reset_password(Request $request){
                 $this->validate($request, [
@@ -217,21 +217,21 @@ class CheckoutController extends Controller
                     return redirect()->route('home')->withMessage('Password Updated Successfully');
                 }
                 else
-                {    
+                {
                     return redirect()->route('home')->withMessage('Password Incorrect');
                 }
             }
 
 
 
-                
+
 
              public function payment()
             {
                 $this->CustomerAuthCheck();
-                return view('pages.payment_page');             
+                return view('pages.payment_page');
             }
-            
+
 
                 //payment gateway function...........Storind them into th data base
             public function order_with_cash(Request $request)
@@ -239,7 +239,7 @@ class CheckoutController extends Controller
                 $this->CustomerAuthCheck();
 
                 $payment_gateway = $request->payment_method;
-                
+
                 $paydata =array();
                 $paydata['payment_method']=$payment_gateway;
                 $paydata['payment_status']='pending';
@@ -253,7 +253,7 @@ class CheckoutController extends Controller
                 $orderdata['order_status']='pending';
                 $order_id=DB::table('tbl_order')
                             ->insertGetId($orderdata);
-                            
+
 
                 //getting the contents as cart which has its product and price
                 $content=Cart::content();
@@ -283,8 +283,8 @@ class CheckoutController extends Controller
 
                         foreach($content as $d_content)
                         {
-                        
-                        
+
+
                         $order_detaildata['product'][$index]['id']=$d_content->id;
                         $order_detaildata['product'][$index]['name']=$d_content->name;
                         $order_detaildata['product'][$index]['price']=$d_content->price;
@@ -292,7 +292,7 @@ class CheckoutController extends Controller
                         $total_price += doubleval($d_content->price) * intval($d_content->qty);
                         $index++;
                         }
-                        
+
                         $shipping_id=Session::get('shipping_id');
                         $profile_get=DB::table('tbl_shipping')
                                             ->where('shipping_id', $shipping_id)
@@ -303,8 +303,8 @@ class CheckoutController extends Controller
                         $request->email = $profile_get->shipping_email;
                         $request->reference = Paystack::genTranxRef();
                         $request->key = config('paystack.secretKey');
-                    
-                
+
+
                     //  dd($request);
                     return Paystack::getAuthorizationUrl()->redirectNow();
                 }
@@ -319,7 +319,7 @@ class CheckoutController extends Controller
                 if(!$request->trxref && !$request->reference)
                     return redirect()->route('home');
 
-                
+
 
                 $paymentDetails = Paystack::getPaymentData();
                 $order_id = $paymentDetails['data']['metadata']['order_id'];
@@ -329,7 +329,7 @@ class CheckoutController extends Controller
                 $payment =DB::table('tbl_payment')
                     ->where('payment_id',$payment_id)
                     ->first();
-                    
+
                 if($payment->payment_data != null)
                     return redirect()->route('home');
 
@@ -341,7 +341,7 @@ class CheckoutController extends Controller
                         $order_detaildata['product_name']=$d_content['name'];
                         $order_detaildata['product_price']=$d_content['price'];
                         $order_detaildata['product_sales_quantity']=$d_content['sales_quantity'];
-                        
+
                         DB::table('tbl_order_details')
                                     ->insert($order_detaildata);
                     }
@@ -428,7 +428,7 @@ class CheckoutController extends Controller
         public function preview_page_password($customer_id)
         {
                 $this->CustomerAuthCheck();
-            
+
                 $password_info=DB::table('tbl_customers_registered')
                         ->where('customer_id', $customer_id)
                         ->first();
@@ -440,7 +440,7 @@ class CheckoutController extends Controller
                         // return view('pages.password_page');
         }
 
-        
+
         //password update
         public function update_password(Request $request, $customer_id)
         {
@@ -453,7 +453,7 @@ class CheckoutController extends Controller
 
             if( password_verify($old_password, $user->password) && $new_password){
                 $new_password = password_hash($new_password, PASSWORD_DEFAULT);
-                
+
                 DB::table('tbl_customers_registered')
                             ->where('customer_id', $customer_id)
                             ->update(['password' => $new_password]);
@@ -464,7 +464,7 @@ class CheckoutController extends Controller
         }
 
 
-        
+
         // public function sslapi()
         // {
 
@@ -475,10 +475,10 @@ class CheckoutController extends Controller
     public function customer_logout()
     {
                     Session::flush();
-                    return Redirect::to('/');
-        
+                    return Redirect::to('/login_checking');
+
     }
-    
+
 
 
     // customer login validation and pages view control

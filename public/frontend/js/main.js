@@ -4,8 +4,8 @@
 
 	var RGBChange = function() {
 	  $('#RGB').css('background', 'rgb('+r.getValue()+','+g.getValue()+','+b.getValue()+')')
-	};	
-		
+	};
+
 /*scroll to top*/
 
 $(document).ready(function(){
@@ -29,7 +29,25 @@ $(document).ready(function(){
 	});
 });
 
-//hidding password
+//Cart increment.....
+var sitePlusMinus = function() {//code to increment and deduct value on cart page dissplay
+		$('.js-btn-minus').on('click', function(e){
+			e.preventDefault();
+			if ( $(this).closest('.input-group').find('.form-control').val() != 0  ) {
+				$(this).closest('.input-group').find('.form-control').val(parseInt($(this).closest('.input-group').find('.form-control').val()) - 1);
+			} else {
+				$(this).closest('.input-group').find('.form-control').val(parseInt(0));
+			}
+		});
+		$('.js-btn-plus').on('click', function(e){
+			e.preventDefault();
+			$(this).closest('.input-group').find('.form-control').val(parseInt($(this).closest('.input-group').find('.form-control').val()) + 1);
+		});
+	};
+	sitePlusMinus();
+
+
+//hidding password for login
 var togglePassword = function () {
 
 	$(".toggle-password").click(function() {
@@ -38,7 +56,7 @@ var togglePassword = function () {
 		var input = $(this).closest('.form-group').find('input');
 		if(input.attr("type") == "password") {
 			input.attr("type", "text");
-		} else { 
+		} else {
 			input.attr("type", "password");
 		}
 
@@ -46,3 +64,33 @@ var togglePassword = function () {
 
 }
 togglePassword();
+
+
+var updateImageHandler = function () {
+
+  let profileImage = $('#fileSelect');
+  let profileInput = $('#fileElem');
+
+  profileImage.click (function(){
+    
+    if (profileInput) {
+      profileInput.click();
+    }
+
+  })
+
+}
+updateImageHandler();
+
+// //loading page with jquery without reloading the page
+// $('document').ready(function() {
+//   $('content_area').load($('.menu_top:first').attr('href'));
+// });
+//
+//
+// $('menu_top').click(function (){
+//   var href = $(this).attr('href');
+//   $('content_area').load(href).fadeIn(10000);
+//
+//   return false;
+// });

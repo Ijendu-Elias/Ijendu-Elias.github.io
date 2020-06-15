@@ -1,0 +1,16 @@
+@media (max-width: 768px){
+  body{
+      font-family: 'Roboto', sans-serif;
+      background:none;
+
+  }
+
+  .img{
+    min-width: 50px;
+    min-height: 20px;
+    padding: none;
+  }
+
+
+
+}

@@ -9,8 +9,8 @@ use\Illuminate\Support\Facades\Redirect;
 
 class HomeController extends Controller
 {
-   
-   
+
+
     public function index()
     {
         // $this->CustomerAuthCheck();
@@ -23,8 +23,8 @@ class HomeController extends Controller
                     ->get();
 
         $manage_product=view('pages.home_content')->with('all_published_product',$all_published_product);
-        return view('layout')->with('pages.home_content', $manage_product);        
-        
+        return view('layout')->with('pages.home_content', $manage_product);
+
         //return view('pages.home_content');
     }
 
@@ -32,7 +32,7 @@ class HomeController extends Controller
 //category_wise function
 public function show_category_product_wise($category_id)
 {
-    
+
     $product_by_category=DB::table('tbl_products')
     ->join('tbl_category','tbl_products.category_id','=','tbl_category.category_id')
     ->join('manufacture','tbl_products.manufacture_id','=','manufacture.manufacture_id')
@@ -43,7 +43,7 @@ public function show_category_product_wise($category_id)
 
 $manage_product_by_category=view('pages.category_wise_product')->with('product_by_category',$product_by_category);
 return view('layout')
-->with('pages.category_wise_product', $manage_product_by_category);    
+->with('pages.category_wise_product', $manage_product_by_category);
     // return view('pages.category_wise_product');
 }
 
@@ -63,8 +63,8 @@ public function show_manufacture_product_wise($manufacture_id)
 
 $manage_manufacture=view('pages.manufacture_wise_product')->with('product_by_manufacture',$product_by_manufacture);
 return view('layout')
-->with('pages.manufacture_wise_product', $manage_manufacture);    
-    
+->with('pages.manufacture_wise_product', $manage_manufacture);
+
     // return view('pages.manufacture_wise_for_product');
 }
 
@@ -122,6 +122,7 @@ return view('pages.search_page')->withProducts($search);
 
 }
 
+
 public function store_users_products(Request $request)
 {
         $user = DB::table('tbl_customers_registered')
@@ -133,8 +134,7 @@ public function store_users_products(Request $request)
     $data['users_seller_phone']=$request->users_seller_phone;
     $data['users_product_description']=$request->users_product_description;
     $data['customer_id']=$user->customer_id;
-    
-    
+
     $image=$request->file('users_image_back');
     if($image){
         $image_name=str_random(20);
@@ -165,11 +165,13 @@ public function Register_and_sell_product()
 //store process form for sale page
 public function proccess_customer_form(Request $request)
 {
+
+// return var_dump("dfghjk");
     $user=DB::table('tbl_customers_registered')
     ->where('customer_email', Session::get('customer_email'))
-    ->first(); 
-    
-    $data = array(); 
+    ->first();
+
+    $data = array();
     $data['sale_id']=$request->sale_id;
     $data['customer_id']=$user->customer_id;
     $data['sale_email']=$request->sale_email;
@@ -182,12 +184,12 @@ public function proccess_customer_form(Request $request)
     $data['sale_zip_code']=$request->sale_zip_code;
     $data['agreed_status']=$request->agreed_status;
     $data['sale_description']=$request->sale_description;
-    
+
     DB::table('tbl_sale_reg')
          ->insert($data);
         Session::put('message', 'Form Submitted successfully !!');
         return Redirect::to('/regSec');
-    
+
 
 }
 
@@ -208,7 +210,7 @@ private function save_data_to_db($table, $data, $success_message = "Upload succe
 }
 
 private function decode_and_save_img($image_data, $save_dir, $extension = '.jpg') {
-    $image_data_raw = $image_data; 
+    $image_data_raw = $image_data;
     $image_data_obj = explode(',',$image_data_raw);
     $image_data_base64_enc = array_pop($image_data_obj);
     $image_data_base64_dec = base64_decode($image_data_base64_enc);
@@ -223,8 +225,8 @@ private function decode_and_save_img($image_data, $save_dir, $extension = '.jpg'
 public function reg_customer_push(Request $request)
 {
     $user = $this->get_user_session();
-    
-    $data = array(); 
+
+    $data = array();
     $data['pro_name']=$request->pro_name;
     $data['customer_id']=$user->customer_id;
     $data['pro_condition']=$request->pro_condition;
@@ -235,9 +237,9 @@ public function reg_customer_push(Request $request)
     $data['category']=$request->category;
     $data['subcategory']=$request->subcategory;
     $data['image_data'] = $this->decode_and_save_img($request->image_data, "sales_crop_img");
-            
+
     $this->save_data_to_db('tbl_users_upload', $data, "");
-    return Redirect::to('/sec_image_upload');     
+    return Redirect::to('/sec_image_upload');
 }
 
 
@@ -248,7 +250,7 @@ public function reg_customer_push(Request $request)
 
 
     public function multiple_Z(Request $request)
-    {   
+    {
         // die(var_dump($request));
         $user = $this->get_user_session();
         $data = array();
@@ -257,10 +259,11 @@ public function reg_customer_push(Request $request)
         $data['back_image_data'] = $this->decode_and_save_img($request->back_image_data, "multiple_img_upload");
         $data['side_image_data'] = $this->decode_and_save_img($request->side_image_data, "multiple_img_upload");
         $this->save_data_to_db('multiple_img_upload', $data, "Images Upload Successfully");
-        return Redirect::to('/sec_image_upload'); 
+        return Redirect::to('/sec_image_upload');
     }
 
-    
+
+
 
 
 
@@ -271,7 +274,7 @@ public function reg_customer_push(Request $request)
     // $data['pro_feature1']=$request->pro_feature1;
     // $data['pro_feature2']=$request->pro_feature2;
     // $data['category']=$request->category;
-    
+
     // $sale_image=$request->file('imageData');
     // if($sale_image){
     //     $image_name=str_random(20);
@@ -287,9 +290,9 @@ public function reg_customer_push(Request $request)
     //         ->insert($data);
     //      Session::put('message','submitted Successfully');
     //      return Redirect::to('/upload_img');}
-    
+
     //     }
-       
+
 //      //adding product without an image
 //      $data['imageData']=$image_url;
 //          DB::table('tbl_users_upload')

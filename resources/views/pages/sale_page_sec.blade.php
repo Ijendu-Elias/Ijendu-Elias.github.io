@@ -1,22 +1,22 @@
 @extends('layout')
 @section('content')
-<div class="container col-md-10 col-offset-3" >
+<div class="container col-md-8" >
     <div class="row">
         <?php $customer_id=Session::get('customer_id'); ?>
-       
+
 
         <h3>Fill In The Form About Your Products</h3>
     </div>
     <form id="product-form" action="{{URL::to('/reg2')}}" method="POST"><!--Customer Registration sell your page-->
       {{ csrf_field() }}
             <div class="form-row">
-                <label for="inputEmail4">Products Name</label>                                     
+                <label for="inputEmail4">Products Name</label>
                 <input type="text" name="pro_name" class="form-control" id="inputEmail4" placeholder="Email" value="" required>
               <div class="form-group col-md-6" style="margin-left:50%">
                 <label for="inputEmail4" style="margin-left:-115%">Product Condition</label>
                 <input type="text" name="pro_condition" class="form-control" id="inputEmail4" placeholder="08035643234"  style="margin-left:-115%"required value="">
               </div>
-       
+
             </div>
             <div class="form-group">
               <label for="inputAddress">Product Warrantee</label>
@@ -64,16 +64,16 @@
           <script>
               var categories = ["select", "electronics", "cloths", "furnitures", "shoes", "accessories", "cars"]
               var subcategory = [{"select":["please choose"]}, {"electronics":["phones","washing machines", "laptops","home theatres", "television"]}, {"cloths":["females wears", "males wear"]}, {"furnitures":["chairs", "table", "arts designs","wall designs", "bed", "stows"]}, {"accessories":["sprays","creams"]}, {"cars":["trailers", "others"]}]
-              
+
               var cat_options_html = "";
               var subcat_options_html = "";
-              
+
               categories.forEach(function(val,indx){
                   //console.log(val);
-                  cat_options_html = cat_options_html + `<option value="${val}">${val}</option>`;                  
+                  cat_options_html = cat_options_html + `<option value="${val}">${val}</option>`;
               })
 
-              $('#inputcat').html(cat_options_html);              
+              $('#inputcat').html(cat_options_html);
               $('#inputcat').on('change', function(){
                   var selected_value = $(this).val();
                   subcategory.forEach(function(val,indx){
@@ -100,15 +100,15 @@
           // Move cropped image data to hidden input
           var imageData = $('.image-editor').cropit('export',{
                     type: 'image/jpeg',
-                    quality: .9  
+                    quality: .9
           });
           console.log(imageData);
-          
+
           $('.hidden-image-data').val(imageData);
           // Print HTTP request params
 
           $('#product-form').submit();
-          
+
         });
       });
     </script>

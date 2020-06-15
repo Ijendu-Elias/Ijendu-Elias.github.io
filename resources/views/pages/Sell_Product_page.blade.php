@@ -1,27 +1,27 @@
 @extends('layout')
 @section('content')
-<div class="container col-md-10 col-offset-3" >
+<div class="container col-md-8 col-offset-3" >
     <div class="row">
         <?php $customer_id=Session::get('customer_id'); ?>
         <?php if($customer_id!= NULL){?>
 
         <h3>Customers Registration Form</h3>
     </div>
-    <form action="{{URL::to('/customer_send_sales')}}" method="POST"><!--Customer Registration sell your page-->
+    <form id="customer_sell_form" method="POST"><!--Customer Registration sell your page-->
       {{ csrf_field() }}
             <div class="form-row">
                 <label for="inputEmail4">Email</label>
-                <?php 
+                <?php
                 $all_published_category=DB::table('tbl_customers_registered')
 																->where('customer_id', $customer_id)
-                                ->get(); 
-                                foreach($all_published_category as $v){?>                               
+                                ->get();
+                                foreach($all_published_category as $v){?>
                 <input type="email" name="sale_email" class="form-control" id="inputEmail4" placeholder="Email" value="{{$v->customer_email}}" required>
               <div class="form-group col-md-6" style="margin-left:50%">
                 <label for="inputEmail4" style="margin-left:-115%">Business Phone Number</label>
                 <input type="text" name="sale_phone" class="form-control" id="inputEmail4" placeholder="08035643234"  style="margin-left:-115%"required value="{{$v->phone_number}}">
               </div>
-           <?php }?> 
+           <?php }?>
             </div>
             <div class="form-group">
               <label for="inputAddress">Product Location</label>
@@ -36,7 +36,7 @@
                 <label for="inputCity">Country</label>
                 <select id="inputCountry" name="sale_country" class="form-control" style="margin-left:-5%">
                   <option  selected >Nigeria</option>
-                </select>              
+                </select>
               </div>
               <div class="form-group col-md-4">
                 <label for="inputState">State</label>
@@ -102,13 +102,13 @@
                                           <a href="{{URL::to('/forget-password')}}"  style="color:red"><i class="fa fa-arrow-right" style="color:skyblue"></i>&nbsp; &nbsp; &nbsp;  Forget Password?</a>
                                           </span>
                                                 <div>
-                                                </div> 
+                                                </div>
                     </form>
                     </div><!--/login form-->
                 </div>
-    
-    
-    
+
+
+
                 <div class="col-sm-1">
                     <h2 class="or"><span class="fa fa-arrow-left">|<span class="fa fa-arrow-right"></h2>
                 </div>
@@ -166,7 +166,7 @@ $('#inputState').on('change', function(e) {
   if(local){
     $("#inputLocal").html('');
     local.state.locals.forEach(loc => {
-      $("#inputLocal").append(`<option value='${loc.name}'>${loc.name}</option>`) 
+      $("#inputLocal").append(`<option value='${loc.name}'>${loc.name}</option>`)
     })
   }
 

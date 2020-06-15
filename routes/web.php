@@ -25,8 +25,10 @@ Route::get('/manufacture_wise/{manufacture_id}', 'HomeController@show_manufactur
 Route::get('/view-product/{product_id}', 'HomeController@view_product_by_id');
 Route::post('save_users_upload', 'HomeController@store_users_products');
 //Customer sell your product route
-Route::get('/Reg/p/r/r', 'HomeController@Register_and_sell_product');//customer registration page to sell products
+// Route::get('/Reg/p/r/r', 'HomeController@Register_and_sell_product');//customer registration page to sell products
+Route::get('/customer_send_sales', 'HomeController@Register_and_sell_product');
 Route::post('/customer_send_sales', 'HomeController@proccess_customer_form');
+
 Route::get('/regSec', 'HomeController@reg_customer_formTwo');
 Route::post('/reg2', 'HomeController@reg_customer_push');
 //Multiple image upload routes
@@ -47,7 +49,7 @@ Route::get('/unactive_user/{customer_id}','AdminController@unactive_user');
 Route::get('/active_user/{customer_id}','AdminController@active_user');
 
 
-//catetory related 
+//catetory related
 Route::get('/add_category','CategoryController@index');
 //all category display
 Route::get('/all_category','CategoryController@all_category');
@@ -219,8 +221,3 @@ Route::get('/delete-post/{post_id}', 'BlogController@delete_blog');
 
 // Laravel 5.1.17 and above
 Route::get('/payment/callback', 'CheckoutController@handleGatewayCallback');
-
-
-
-
-

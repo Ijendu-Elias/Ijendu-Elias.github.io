@@ -3,19 +3,14 @@
 <div class="col-sm-9 padding-right">
     <div class="product-details"><!--product-details-->
         <div class="col-sm-5">
-            <div class="view-product">
-                
-    <?php foreach ($product_by_view as $product_detail){?>  
-                <img src="{{URL::to($product_detail->product_image)}}" style="width:300px; height:440px; alt="" />
-                
+            <div class="view-product bounceInLeft">
+              <?php foreach ($product_by_view as $product_detail){?>
+                <img src="{{URL::to($product_detail->product_image)}}"  alt="" />
             </div>
             <div id="similar-product" class="carousel slide" data-ride="carousel">
-                
-               
             </div>
-
         </div>
-        <div class="col-sm-7">
+        <div class="col-sm-7 bounceInRight">
             <div class="product-information"><!--/product-information-->
                     <img src="{{URL::to('frontend/images/product-details/new.jpg')}}" class="newarrival" alt="" />
                     <h1>{{$product_detail->product_name}}</h1>
@@ -27,31 +22,41 @@
             <form action="{{URL::to('/add_cart')}}" method="POST">
                     {{ csrf_field()}}
                     <label>Quantity:</label>
-                         <input type="text" name="qty" value="1" />
-                         <input type="hidden" name="product_id" value="{{$product_detail->product_id}}">
-                            <button type="submit" class="btn btn-fefault cart">
+                      <div class="mb-5">
+                          <div class="input-group mb-3" style="max-width: 120px;">
+                         <div class="input-group-prepend">
+                           <button class="btn btn-outline-primary js-btn-minus" type="button" style="margin-bottom:0px;">&minus;</button>
+                           </div>
+                             <input type="text" class="form-control text-center"name="qty" value="1" />
+                             <div class="input-group-append">
+                              <button class="btn btn-outline-primary js-btn-plus" type="button" style="margin-top:0px">&plus;</button>
+                               </div>
+                              <input type="hidden" name="product_id" value="{{$product_detail->product_id}}">
+                               <button type="submit" class="btn btn-fefault cart">
                                 <i class="fa fa-shopping-cart"></i>
                                     Add Cart
-                            </button>
-                </form>
-                </span>
+                               </button>
+                             </div>
+                          </div>
+                    </form>
+                  </span>
                 <p>Product Condition:<b>Good<i class="fa fa-thumbs-up"></i></p>
                 <p>{{$product_detail->category_name}}</p>
                 <p>L.DESC:{{$product_detail->product_long_description}}</p>
                 <p>Manufacturer:{{$product_detail->manufacture_name}}</p>
-                
+
             </div><!--/product-information-->
         </div>
-    
+
      <?php }?>
 
     </div><!--/product-details-->
-    <div class="category-tab shop-details-tab"><!--category-tab-->
+    <div class="category-tab shop-details-tab bounceInLeft"><!--category-tab-->
         <div class="col-sm-12">
             <ul class="nav nav-tabs">
                 <li><a href="#details" data-toggle="tab">About The Products</a></li>
                 <li><a href="#companyprofile" data-toggle="tab">Manufacturer</a></li>
-                <li><a href="#tag" data-toggle="tab">Price Fix 
+                <li><a href="#tag" data-toggle="tab">Price Fix
                     </a></li>
                 <li class="active"><a href="#reviews" data-toggle="tab">Special Order</a></li>
             </ul>
@@ -73,11 +78,11 @@
                         </div>
                     </div>
                 </div>
-                
-                
-                
+
+
+
             </div>
-            
+
             <div class="tab-pane fade" id="companyprofile" >
                 <div class="col-sm-3">
                     <div class="product-image-wrapper">
@@ -92,14 +97,14 @@
                     </div>
                 </div>
                </div>
-            
+
             <div class="tab-pane fade" id="tag" >
-                
-                
-                
-                
+
+
+
+
             </div>
-            
+
             <div class="tab-pane fade active in" id="reviews" >
                 <div class="col-sm-12">
                     <ul>
@@ -109,7 +114,7 @@
                     </ul>
                     <p>This website is cool and 100% secure......very fast in delivery system</p>
                     <marquee><i><b>Special Product Request</i></p></marquee>
-                    
+
                     <form action="{{URL::to('/Special_Request')}}" method="POST">
                     {{csrf_field ()}}
                         <div class="form-group-row">
@@ -132,7 +137,7 @@
                     </form>
                 </div>
             </div>
-            
+
         </div>
     </div><!--/category-tab-->
     <div class="carousel-inner" >
@@ -172,9 +177,9 @@
                 </div>
             </div>
 <?php }?>
-            
-           
-                   
-            
+
+
+
+
                 </div><!--features_items-->
 @endsection

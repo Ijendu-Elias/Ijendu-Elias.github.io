@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
-<section id="form"><!--form-->
-    <div class="container">
+<section id="form"><!--form   class="bounceInLeft"-->
+    <div class="container" >
         <div class="row">
             <div class="col-md-3 col-md-offset-1">
                 <div class="login-form"><!--login form-->
@@ -14,9 +14,9 @@
                                     Session::put('message', null);
                                 ?>
                                 </p><!--end of flash message-->
-                    <form action="{{URL::to('/customer_login')}}" method="POST">
+                    <form action="{{URL::to('/customer_login')}}" method="POST"  class="bounceInLeft">
                         {{ csrf_field() }}
-                        <input type="email" placeholder="Email" name="customer_email"  required/>
+                        <input type="email" placeholder="Email" name="customer_email"  value="{{old('customer_email')}}" required/>
                         <div class="form-group">
                             <input type="password" placeholder="password" name="password" required/>
                             <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
@@ -29,7 +29,7 @@
                         <a href="{{URL::to('/forget-password')}}"  style="color:red"><i class="fa fa-arrow-right" style="color:skyblue"></i>&nbsp; &nbsp; &nbsp;  Forget Password?</a>
                         </span>
                               <div>
-                              </div> 
+                              </div>
                     </form>
                 </div><!--/login form-->
             </div>
@@ -51,18 +51,16 @@
         </ul>
     </div>
 @endif
-                <form action="{{URL::to('/customer_register')}}"  method="POST">
+                <form action="{{URL::to('/customer_register')}}"  method="POST"  class="bounceInRight">
                     {{ csrf_field() }}
                       <input type="text" placeholder="Name" value="{{old('customer_name')}}" name="customer_name" required />
                 <input type="email" placeholder="Email Address" value="{{old('customer_email')}}" name="customer_email"required/>
                         <input type="text" name="phone_number" value="{{old('phone_number')}}" placeholder="Enter your phone Number"required />
                         <input type="password" name="password" placeholder="Enter your Password" required id="password" />
                         <input type="password" name="password_confirmation" placeholder="Confirm Password" required id="confirm_password"  />
-                        <div class="control-group hidden-phone">
-                            <label class="control-label" for="textarea2" style="color:red;"><a href="#">Data Policy Applied</a></label>
-                            <div class="controls">
-                                <input type="checkbox" name="suspension" checked value="1" style="cursor:pointer">
-                            </div>
+                        <div>
+                          <input type="checkbox" name="suspension" checked value="1" style="cursor:pointer; width:15px; float:left;  ">
+                          <p style="color:red; float:right; padding-left:none; margin-top:13px; margin-right:45%;">Please Click The CheckBox</p>
                         </div>
                         <button type="submit" class="btn btn-default" style="width:150%; ">Submit</button>
                     </form>
@@ -74,7 +72,7 @@
 
 
      <div class="carousel-inner" >
-            
+
             <marquee behavior="scroll" direction=""><h5>Checkout On Our Amazing Offer</h5></marquee><hr>
             <?php
                 $all_published_category=DB::table('tbl_products')
@@ -111,10 +109,10 @@
                 </div>
             </div>
 <?php }?>
-            
-           
-                   
-            
+
+
+
+
                 </div><!--features_items-->
 </section><!--/form-->
 @endsection

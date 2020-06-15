@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
         <h2 class="title text-center">Products Available</h2>
-       
+
        <?php foreach ($product_by_category as $view_category_wise){?>
 
             <div class="col-sm-4">
@@ -32,7 +32,7 @@
             </div><!--features_items--><br><br><br><br>
 
             <div class="carousel-inner">
-            <h5>Related Products Availables</h5>
+            <h5>Products You Could Need</h5>
             <?php
                 $all_published_category=DB::table('tbl_products')
                     ->join('tbl_category','tbl_products.category_id','=','tbl_category.category_id')
@@ -42,11 +42,11 @@
                     ->get();
                     foreach($all_published_category as $log){?>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-2" style="margin-right:12%;">
                        <div class="product-image-wrapper">
                            <div class="single-products">
                             <div class="productinfo text-center">
-                                <img class="img-thumbnail" src="{{URL::to($log->product_image)}}" alt="" style="height:200px; border:2px solid gray;" />
+                                <img class="img-thumbnail" src="{{URL::to($log->product_image)}}" alt="" style=border:2px solid white;" />
                                 <h2  style="color:black;">N{{$log->product_price}}</h2>
                                 <p>{{$log->product_name}}</p>
                                 <a href="{{URL::to('/view-product/'.$log->product_id)}}" class="btn btn-default add-to-cart" style="cursor:progress" ><i class="fa fa-shopping-cart"></i>Add to cart</a>
@@ -68,10 +68,6 @@
                 </div>
             </div>
 <?php }?>
-            
-           
-                   
-            
                 </div><!--features_items-->
 
             @endsection
